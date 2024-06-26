@@ -1,5 +1,6 @@
 package fr.athompson.ffbbscraper;
 
+import fr.athompson.ffbbscraper.scrapers.journee.JourneeScraper;
 import fr.athompson.ffbbscraper.scrapers.organisation.APIOrganisationScraper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,6 +13,8 @@ public class FfbbScraperApplication {
 
     APIOrganisationScraper organisationScraper;
 
+    JourneeScraper journeeScraper = new JourneeScraper();
+
     public FfbbScraperApplication(APIOrganisationScraper organisationScraper) {
         this.organisationScraper = organisationScraper;
     }
@@ -22,7 +25,8 @@ public class FfbbScraperApplication {
 
     @Scheduled(fixedRate = 5000)
     public void call(){
-        organisationScraper.scrap("1a961afb98b");
+        journeeScraper.scrap("b5e6211fe7d7","200000002844631","200000002965844","22");
+        //organisationScraper.scrap("1a961afb98b");
     }
 
 }
