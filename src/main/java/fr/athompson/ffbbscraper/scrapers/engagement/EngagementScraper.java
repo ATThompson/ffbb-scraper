@@ -1,5 +1,6 @@
 package fr.athompson.ffbbscraper.scrapers.engagement;
 
+import fr.athompson.ffbbscraper.scrapers.Scraper;
 import fr.athompson.ffbbscraper.utils.URIBuilder;
 import fr.athompson.ffbbscraper.entities.engagement.Engagement;
 import fr.athompson.ffbbscraper.entities.engagement.factory.EngagementFactory;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class EngagementScraper implements APIEngagementScraper {
+public class EngagementScraper extends Scraper implements APIEngagementScraper {
 
     final String URI_ENGAGEMENT = "https://resultats.ffbb.com/organisation/engagements/";
 
@@ -23,7 +24,7 @@ public class EngagementScraper implements APIEngagementScraper {
     public List<Engagement> scrap(String idOrganisation){
         String uri = URIBuilder.build(URI_ENGAGEMENT,idOrganisation);
         try {
-            Document doc = Jsoup.connect(uri).get();
+            Document doc = getDocument(uri);
             Elements htmlEngagements = doc.select("table.liste");
             List<Engagement> engagements = new ArrayList<>();
             for (Element htmlEngagement : htmlEngagements) {
@@ -32,6 +33,8 @@ public class EngagementScraper implements APIEngagementScraper {
             }
             System.out.println(engagements);
         } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
@@ -45,6 +48,11 @@ public class EngagementScraper implements APIEngagementScraper {
                .first()
                .text()
                .trim();
+
+       //Parcourir l'engagement et créer les compétitions adéquates
+        var  test = htmlEngagement
+               .getElementsByTag("tr")
+               .not(".titre-bloc");
 
         var htmlSexeChampionnat = htmlEngagement
                 .getElementsByClass("tit-3")

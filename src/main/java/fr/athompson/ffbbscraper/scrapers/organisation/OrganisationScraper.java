@@ -1,5 +1,6 @@
 package fr.athompson.ffbbscraper.scrapers.organisation;
 
+import fr.athompson.ffbbscraper.scrapers.Scraper;
 import fr.athompson.ffbbscraper.scrapers.engagement.APIEngagementScraper;
 import fr.athompson.ffbbscraper.entities.engagement.Engagement;
 import fr.athompson.ffbbscraper.entities.Organisation;
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class OrganisationScraper implements APIOrganisationScraper{
+public class OrganisationScraper extends Scraper implements APIOrganisationScraper{
 
     APIEngagementScraper engagementScraper;
 

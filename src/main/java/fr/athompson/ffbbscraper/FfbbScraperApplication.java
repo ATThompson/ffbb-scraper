@@ -25,8 +25,8 @@ public class FfbbScraperApplication {
 
     @Scheduled(fixedRate = 5000)
     public void call(){
-        journeeScraper.scrap("b5e6211fe7d7","200000002844631","200000002965844","22");
-        //organisationScraper.scrap("1a961afb98b");
+        //journeeScraper.scrap("b5e6211fe7d7","200000002844631","200000002965844","22");
+        organisationScraper.scrap("1a961afb98b");
     }
 
 }
