@@ -16,6 +16,8 @@ public abstract class Scraper {
         WebDriverManager.chromedriver().clearDriverCache().setup();
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
+        //Ajouter car plante sur WSL sur environnement UBUNTU
+        options.addArguments("no-sandbox");
         var driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         try {

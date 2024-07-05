@@ -2,6 +2,7 @@ package fr.athompson.ffbbscraper;
 
 import fr.athompson.ffbbscraper.scrapers.journee.JourneeScraper;
 import fr.athompson.ffbbscraper.scrapers.organisation.APIOrganisationScraper;
+import jakarta.annotation.PostConstruct;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -23,7 +24,8 @@ public class FfbbScraperApplication {
         SpringApplication.run(FfbbScraperApplication.class, args);
     }
 
-    @Scheduled(fixedRate = 5000)
+    //@Scheduled(fixedRate = 5000)
+    @PostConstruct
     public void call(){
         //journeeScraper.scrap("b5e6211fe7d7","200000002844631","200000002965844","22");
         organisationScraper.scrap("1a961afb98b");
