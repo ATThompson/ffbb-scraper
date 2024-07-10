@@ -2,9 +2,14 @@ package fr.athompson.ffbbscraper;
 
 import fr.athompson.ffbbscraper.scrapers.journee.JourneeScraper;
 import fr.athompson.ffbbscraper.scrapers.organisation.APIOrganisationScraper;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import jakarta.annotation.PostConstruct;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
@@ -14,8 +19,10 @@ public class FfbbScraperApplication {
 
     APIOrganisationScraper organisationScraper;
 
-    JourneeScraper journeeScraper = new JourneeScraper();
+    @Autowired
+    ChromeDriver driver;
 
+    JourneeScraper journeeScraper = new JourneeScraper();
     public FfbbScraperApplication(APIOrganisationScraper organisationScraper) {
         this.organisationScraper = organisationScraper;
     }
@@ -28,7 +35,14 @@ public class FfbbScraperApplication {
     @PostConstruct
     public void call(){
         //journeeScraper.scrap("b5e6211fe7d7","200000002844631","200000002965844","22");
-        organisationScraper.scrap("1a961afb98b");
+        try {
+            organisationScraper.scrap("1a961afb98b");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }finally {
+            driver.quit();
+        }
     }
+
 
 }
