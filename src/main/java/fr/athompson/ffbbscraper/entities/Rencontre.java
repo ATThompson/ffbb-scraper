@@ -1,8 +1,12 @@
 package fr.athompson.ffbbscraper.entities;
 
+import lombok.Builder;
+
 import java.time.LocalDateTime;
 
-public record Rencontre(LocalDateTime date,
+@Builder
+public record Rencontre(Integer numeroRencontre,
+                        LocalDateTime date,
                         Equipe equipeDomicile,
                         Equipe equipeVisiteur,
                         Integer scoreDomicile,

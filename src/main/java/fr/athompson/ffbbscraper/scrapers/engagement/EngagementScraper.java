@@ -34,10 +34,10 @@ public class EngagementScraper extends Scraper implements APIEngagementScraper {
     @Override
     public List<Engagement> scrap(String idOrganisation){
         String uri = URIBuilder.build(URI_ENGAGEMENT,idOrganisation);
+        var engagements = new ArrayList<Engagement>();
         try {
             Document doc = getDocument(uri);
             Elements htmlEngagements = doc.select("table.liste");
-            List<Engagement> engagements = new ArrayList<>();
             for (Element htmlEngagement : htmlEngagements) {
                 var engagement = creerEngagement(htmlEngagement);
                 engagements.add(engagement);
@@ -49,7 +49,7 @@ public class EngagementScraper extends Scraper implements APIEngagementScraper {
             throw new RuntimeException(e);
         }
 
-        return new ArrayList<Engagement>();
+        return engagements;
     }
 
     private Engagement creerEngagement(Element htmlEngagement) throws Exception {
@@ -87,7 +87,7 @@ public class EngagementScraper extends Scraper implements APIEngagementScraper {
             competitionsEngagees.put(sexeCompetition,competitions);
         }
 
-        return EngagementFactory.createEngagement(EngagementType.findByLibelleHtml(htmlTypeEngagement),null);
+        return EngagementFactory.createEngagement(EngagementType.findByLibelleHtml(htmlTypeEngagement),competitionsEngagees);
     }
 
 }

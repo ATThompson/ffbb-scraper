@@ -36,7 +36,8 @@ public class FfbbScraperApplication {
     public void call(){
         //journeeScraper.scrap("b5e6211fe7d7","200000002844631","200000002965844","22");
         try {
-            organisationScraper.scrap("1a961afb98b");
+            var t = organisationScraper.scrap("1a961afb98b");
+            System.out.print("finiiiii");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }finally {

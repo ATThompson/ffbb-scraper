@@ -1,6 +1,7 @@
 package fr.athompson.ffbbscraper.scrapers;
 
 import fr.athompson.ffbbscraper.entities.Competition;
+import fr.athompson.ffbbscraper.entities.Journee;
 import fr.athompson.ffbbscraper.scrapers.journee.APIJourneeScraper;
 import fr.athompson.ffbbscraper.scrapers.page.APIPageScaper;
 import fr.athompson.ffbbscraper.utils.URIBuilder;
@@ -11,6 +12,7 @@ import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HexFormat;
 
 @Component
@@ -34,7 +36,7 @@ public class CompetitionScraper extends Scraper implements APICompetitionScraper
         //https://resultats.ffbb.com/championnat/journees/b5e6211fe7d7b5e62121c154.html
         //scrap le classement
         //Scrap toutes les journées
-
+        var journees = new ArrayList<Journee>();
         try {
 
             Document doc = getDocument(uri);
@@ -54,13 +56,13 @@ public class CompetitionScraper extends Scraper implements APICompetitionScraper
             //idDivision 200000002844631
             //idPoule 200000002965844
             for(int page = 1; page <= nbPages; page++){
-                journeeScraper.scrap(paramJournee,page);
+                journees.add(journeeScraper.scrap(paramJournee,page));
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return null;
+        return new Competition(null,journees,null);
     }
 }
