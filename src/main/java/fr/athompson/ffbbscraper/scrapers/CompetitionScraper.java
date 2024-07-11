@@ -58,10 +58,9 @@ public class CompetitionScraper extends Scraper implements APICompetitionScraper
             for(int page = 1; page <= nbPages; page++){
                 journees.add(journeeScraper.scrap(paramJournee,page));
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            log.error(e.getMessage());
+            //throw new RuntimeException(e);
         }
         return new Competition(null,journees,null);
     }

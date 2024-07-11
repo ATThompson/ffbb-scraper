@@ -81,8 +81,11 @@ public class EngagementScraper extends Scraper implements APIEngagementScraper {
                 log.info(firstTableCellText);
                 String lienCompetition = equipeEngage.select("a").attr("href");
                 var params = new Parametres(lienCompetition);
-                Competition competition = competitionScraper.scrap(params.getIdOrganisation(), params.getIdDivision(),params.getIdPoule());
-                competitions.add(competition);
+                //TODO supprimer , juste pour les tests la
+                //if(EngagementType.findByLibelleHtml(htmlTypeEngagement) == EngagementType.COUPE) {
+                    Competition competition = competitionScraper.scrap(params.getIdOrganisation(), params.getIdDivision(), params.getIdPoule());
+                    competitions.add(competition);
+                //}
             }
             competitionsEngagees.put(sexeCompetition,competitions);
         }
