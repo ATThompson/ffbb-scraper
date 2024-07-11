@@ -73,6 +73,9 @@ public class EngagementScraper extends Scraper implements APIEngagementScraper {
             competitions.clear();
             String firstTableCellText =  ScrapUtils.getFirstElementText(equipeEngage,"td");
             if(equipeEngage.hasClass("tit-3")) {
+                if(null != sexeCompetition)
+                    competitionsEngagees.put(sexeCompetition,competitions);
+                
                 sexeCompetition = SexeCompetitionType.findByLibelleHtml(firstTableCellText);
                 log.info(sexeCompetition);
             }
@@ -87,9 +90,8 @@ public class EngagementScraper extends Scraper implements APIEngagementScraper {
                     competitions.add(competition);
                 //}
             }
-            competitionsEngagees.put(sexeCompetition,competitions);
         }
-
+        competitionsEngagees.put(sexeCompetition,competitions);
         return EngagementFactory.createEngagement(EngagementType.findByLibelleHtml(htmlTypeEngagement),competitionsEngagees);
     }
 
