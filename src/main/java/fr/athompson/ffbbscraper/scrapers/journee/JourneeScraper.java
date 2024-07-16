@@ -22,6 +22,7 @@ public class JourneeScraper extends Scraper implements APIJourneeScraper{
     final String URI = "https://resultats.ffbb.com/championnat/rencontres/{0}.html";
 
 
+    //TODO: Créer un rencontre scraper et enlever la partie rencontre
     public Journee scrap(String paramJournee, int page){
         var rencontres = new ArrayList<Rencontre>();
         try {

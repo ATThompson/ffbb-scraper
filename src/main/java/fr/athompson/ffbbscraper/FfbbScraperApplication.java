@@ -1,10 +1,12 @@
 package fr.athompson.ffbbscraper;
 
+import fr.athompson.ffbbscraper.scrapers.classement.APIClassementScraper;
 import fr.athompson.ffbbscraper.scrapers.journee.JourneeScraper;
 import fr.athompson.ffbbscraper.scrapers.organisation.APIOrganisationScraper;
 import fr.athompson.ffbbscraper.utils.CompteurAppelSingleton;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import jakarta.annotation.PostConstruct;
+import lombok.AllArgsConstructor;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,17 +23,15 @@ import java.time.LocalTime;
 
 @SpringBootApplication
 @EnableScheduling
+@AllArgsConstructor
 public class FfbbScraperApplication {
 
     APIOrganisationScraper organisationScraper;
 
-    @Autowired
+    APIClassementScraper classementScraper;
+
     ChromeDriver driver;
 
-    JourneeScraper journeeScraper = new JourneeScraper();
-    public FfbbScraperApplication(APIOrganisationScraper organisationScraper) {
-        this.organisationScraper = organisationScraper;
-    }
 
     public static void main(String[] args) {
         SpringApplication.run(FfbbScraperApplication.class, args);
@@ -44,6 +44,7 @@ public class FfbbScraperApplication {
         try {
             LocalTime previous = LocalTime.now();
             var t = organisationScraper.scrap("1a961afb98b");
+            ///var t = classementScraper.scrap("b5e6211fe7d7b5e62121c154");
             var end = LocalTime.now();
             var duration = Duration.between(previous,end);
             var formattedDuration = String.format("%02d:%02d", duration.toMinutesPart(),

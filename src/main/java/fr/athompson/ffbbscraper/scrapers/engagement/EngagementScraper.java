@@ -70,12 +70,13 @@ public class EngagementScraper extends Scraper implements APIEngagementScraper {
         SexeCompetitionType sexeCompetition = null;
         var competitions = new ArrayList<Competition>();
         for(Element equipeEngage : equipesEngages){
-            competitions.clear();
+
             String firstTableCellText =  ScrapUtils.getFirstElementText(equipeEngage,"td");
             if(equipeEngage.hasClass("tit-3")) {
-                if(null != sexeCompetition)
-                    competitionsEngagees.put(sexeCompetition,competitions);
-                
+                if(null != sexeCompetition) {
+                    competitionsEngagees.put(sexeCompetition, competitions);
+                    competitions = new ArrayList<>();
+                }
                 sexeCompetition = SexeCompetitionType.findByLibelleHtml(firstTableCellText);
                 log.info(sexeCompetition);
             }
@@ -84,11 +85,11 @@ public class EngagementScraper extends Scraper implements APIEngagementScraper {
                 log.info(firstTableCellText);
                 String lienCompetition = equipeEngage.select("a").attr("href");
                 var params = new Parametres(lienCompetition);
-                //TODO supprimer , juste pour les tests la
-                //if(EngagementType.findByLibelleHtml(htmlTypeEngagement) == EngagementType.COUPE) {
+                //TODO on focus sur le championnat pour le moment
+                if(EngagementType.findByLibelleHtml(htmlTypeEngagement) == EngagementType.CHAMPIONNAT) {
                     Competition competition = competitionScraper.scrap(params.getIdOrganisation(), params.getIdDivision(), params.getIdPoule());
                     competitions.add(competition);
-                //}
+                }
             }
         }
         competitionsEngagees.put(sexeCompetition,competitions);

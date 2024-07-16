@@ -1,0 +1,304 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": false,
+    "cutInterfaceStructures": false,
+    "cutDataStructures": false,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 6,
+    "backwardDepth": 6,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": true, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "fr.athompson.ffbbscraper.entities.Organisation",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_2128802603 { 
+   	label=athompson
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   subgraph cluster_1483982757 { 
+   	label=ffbbscraper
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   Classement1582505299[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Classement</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   rows: List&lt;RowClassement&gt; [0..*]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ rows(): List&lt;RowClassement&gt;</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Competition1250455220[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Competition</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   classement: Classement [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   equipes: List&lt;Equipe&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   journees: List&lt;Journee&gt; [0..*]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ classement(): Classement</TD></TR>
+<TR><TD ALIGN="LEFT" >+ equipes(): List&lt;Equipe&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ journees(): List&lt;Journee&gt;</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Engagement1432706593[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Engagement</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   competitionsEngagees: Map&lt;SexeCompetitionType, List&lt;Competition&gt;&gt; [0..*]</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+EngagementChampionnat1432706593[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)EngagementChampionnat</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+EngagementCoupe1432706593[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)EngagementCoupe</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+EngagementPlateau1432706593[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)EngagementPlateau</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Equipe1250455220[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Equipe</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   nom: String [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ nom(): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Journee1250455220[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Journee</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   recontres: List&lt;Rencontre&gt; [0..*]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ recontres(): List&lt;Rencontre&gt;</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Organisation1250455220[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Organisation</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   engagements: List&lt;Engagement&gt; [0..*]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ engagements(): List&lt;Engagement&gt;</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Rencontre1250455220[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Rencontre</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   date: LocalDateTime [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   equipeDomicile: Equipe [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   equipeVisiteur: Equipe [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   numeroRencontre: Integer [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   scoreDomicile: Integer [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   scoreVisiteur: Integer [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ builder(): RencontreBuilder</TD></TR>
+<TR><TD ALIGN="LEFT" >+ date(): LocalDateTime</TD></TR>
+<TR><TD ALIGN="LEFT" >+ equipeDomicile(): Equipe</TD></TR>
+<TR><TD ALIGN="LEFT" >+ equipeVisiteur(): Equipe</TD></TR>
+<TR><TD ALIGN="LEFT" >+ numeroRencontre(): Integer</TD></TR>
+<TR><TD ALIGN="LEFT" >+ scoreDomicile(): Integer</TD></TR>
+<TR><TD ALIGN="LEFT" >+ scoreVisiteur(): Integer</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+RowClassement1582505299[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)RowClassement</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   difference: Integer [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   equipe: Equipe [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   matchForfait: Integer [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   matchGagnes: Integer [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   matchJoues: Integer [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   matchNuls: Integer [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   matchPenalite: Integer [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   matchPerdus: Integer [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   points: Integer [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   pointsEncaisses: Integer [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   pointsMarques: Integer [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   position: Integer [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ builder(): RowClassementBuilder</TD></TR>
+<TR><TD ALIGN="LEFT" >+ difference(): Integer</TD></TR>
+<TR><TD ALIGN="LEFT" >+ equipe(): Equipe</TD></TR>
+<TR><TD ALIGN="LEFT" >+ matchForfait(): Integer</TD></TR>
+<TR><TD ALIGN="LEFT" >+ matchGagnes(): Integer</TD></TR>
+<TR><TD ALIGN="LEFT" >+ matchJoues(): Integer</TD></TR>
+<TR><TD ALIGN="LEFT" >+ matchNuls(): Integer</TD></TR>
+<TR><TD ALIGN="LEFT" >+ matchPenalite(): Integer</TD></TR>
+<TR><TD ALIGN="LEFT" >+ matchPerdus(): Integer</TD></TR>
+<TR><TD ALIGN="LEFT" >+ points(): Integer</TD></TR>
+<TR><TD ALIGN="LEFT" >+ pointsEncaisses(): Integer</TD></TR>
+<TR><TD ALIGN="LEFT" >+ pointsMarques(): Integer</TD></TR>
+<TR><TD ALIGN="LEFT" >+ position(): Integer</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+} 
+
+'edges    
+Classement1582505299 -> RowClassement1582505299[label="rows
+[0..*]"];
+Competition1250455220 -> Classement1582505299[label="classement
+[0..1]"];
+Competition1250455220 -> Equipe1250455220[label="equipes
+[0..*]"];
+Competition1250455220 -> Journee1250455220[label="journees
+[0..*]"];
+Engagement1432706593 -> Competition1250455220[label="competitionsEngagees
+[0..*]"];
+Engagement1432706593 -> EngagementChampionnat1432706593[arrowhead=none, arrowtail=empty, dir=both];
+Engagement1432706593 -> EngagementCoupe1432706593[arrowhead=none, arrowtail=empty, dir=both];
+Engagement1432706593 -> EngagementPlateau1432706593[arrowhead=none, arrowtail=empty, dir=both];
+Journee1250455220 -> Rencontre1250455220[label="recontres
+[0..*]"];
+Organisation1250455220 -> Engagement1432706593[label="engagements
+[0..*]"];
+Rencontre1250455220 -> Equipe1250455220[label="equipeDomicile
+[0..1]"];
+Rencontre1250455220 -> Equipe1250455220[label="equipeVisiteur
+[0..1]"];
+RowClassement1582505299 -> Equipe1250455220[label="equipe
+[0..1]"];
+    
+}
+@enduml
