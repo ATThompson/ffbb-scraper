@@ -18,36 +18,35 @@ import java.util.ArrayList;
 @Slf4j
 public class ClassementScraper extends Scraper<Classement> implements APIClassementScraper {
 
-
     public ClassementScraper(@Value("${ffbb.url.classement}") String uri, ChromeDriver driver) {
         super(uri, driver);
     }
 
     public Classement scrap(Document doc) {
         var rowsClassement = new ArrayList<RowClassement>();
-        try {
-            var tableRowClassement = doc.select("table.list tr[class*=altern-2]");
-            for (Element rowElement : tableRowClassement) {
-                Elements dataRow = rowElement.getAllElements();
-                var oneRowClassement = RowClassement.builder()
-                        .position(Integer.valueOf(dataRow.get(1).text()))
-                        .equipe(new Equipe(dataRow.get(3).text()))
-                        .points(Integer.valueOf(dataRow.get(4).text()))
-                        .matchJoues(Integer.valueOf(dataRow.get(5).text()))
-                        .matchGagnes(Integer.valueOf(dataRow.get(6).text()))
-                        .matchPerdus(Integer.valueOf(dataRow.get(7).text()))
-                        .matchNuls(Integer.valueOf(dataRow.get(8).text()))
-                        .matchPenalite(Integer.valueOf(dataRow.get(10).text()))
-                        .matchForfait(Integer.valueOf(dataRow.get(11).text()))
-                        .pointsMarques(Integer.valueOf(dataRow.get(16).text()))
-                        .pointsEncaisses(Integer.valueOf(dataRow.get(17).text()))
-                        .difference(Integer.valueOf(dataRow.get(18).text()))
-                        .build();
-                rowsClassement.add(oneRowClassement);
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage());
+        var tableRowClassement = doc.select("table.list tr[class*=altern-2]");
+        for (Element rowElement : tableRowClassement) {
+            Elements dataRow = rowElement.getAllElements();
+            var oneRowClassement = getOneRowClassement(dataRow);
+            rowsClassement.add(oneRowClassement);
         }
         return new Classement(rowsClassement);
+    }
+
+    private RowClassement getOneRowClassement(Elements dataRow) {
+        return RowClassement.builder()
+                .position(Integer.valueOf(dataRow.get(1).text()))
+                .equipe(new Equipe(dataRow.get(3).text()))
+                .points(Integer.valueOf(dataRow.get(4).text()))
+                .matchJoues(Integer.valueOf(dataRow.get(5).text()))
+                .matchGagnes(Integer.valueOf(dataRow.get(6).text()))
+                .matchPerdus(Integer.valueOf(dataRow.get(7).text()))
+                .matchNuls(Integer.valueOf(dataRow.get(8).text()))
+                .matchPenalite(Integer.valueOf(dataRow.get(10).text()))
+                .matchForfait(Integer.valueOf(dataRow.get(11).text()))
+                .pointsMarques(Integer.valueOf(dataRow.get(16).text()))
+                .pointsEncaisses(Integer.valueOf(dataRow.get(17).text()))
+                .difference(Integer.valueOf(dataRow.get(18).text()))
+                .build();
     }
 }

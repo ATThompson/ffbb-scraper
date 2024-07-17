@@ -1,6 +1,5 @@
 package fr.athompson.ffbbscraper.scrapers;
 
-import fr.athompson.ffbbscraper.RequisPourScrap;
 import fr.athompson.ffbbscraper.utils.CompteurAppelSingleton;
 import fr.athompson.ffbbscraper.utils.URIBuilder;
 import lombok.AllArgsConstructor;
@@ -13,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @AllArgsConstructor
-public abstract class Scraper<T> implements RequisPourScrap<T> {
+public abstract class Scraper<T> {
 
     final String uri;
 
@@ -38,4 +37,5 @@ public abstract class Scraper<T> implements RequisPourScrap<T> {
         }
     }
 
+    protected abstract T scrap(Document doc) throws Exception;
 }

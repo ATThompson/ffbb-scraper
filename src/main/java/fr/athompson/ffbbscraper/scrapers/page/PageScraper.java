@@ -18,12 +18,7 @@ public class PageScraper extends Scraper<Integer> implements APIPageScaper {
 
     @Override
     public Integer scrap(Document doc) {
-        try {
-            Elements tds = doc.select("td .tabloJournee-no-altern");
-            return tds.size();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        Elements tds = doc.select("td .tabloJournee-no-altern");
+        return tds.size();
     }
-
 }

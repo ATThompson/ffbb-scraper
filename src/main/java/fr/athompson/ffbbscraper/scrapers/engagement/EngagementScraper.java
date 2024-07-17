@@ -5,8 +5,8 @@ import fr.athompson.ffbbscraper.entities.engagement.Engagement;
 import fr.athompson.ffbbscraper.entities.engagement.factory.EngagementFactory;
 import fr.athompson.ffbbscraper.enums.EngagementType;
 import fr.athompson.ffbbscraper.enums.SexeCompetitionType;
-import fr.athompson.ffbbscraper.scrapers.APICompetitionScraper;
 import fr.athompson.ffbbscraper.scrapers.Scraper;
+import fr.athompson.ffbbscraper.scrapers.competition.APICompetitionScraper;
 import fr.athompson.ffbbscraper.utils.ScrapUtils;
 import lombok.extern.log4j.Log4j2;
 import org.jsoup.nodes.Document;
@@ -31,13 +31,22 @@ public class EngagementScraper extends Scraper<List<Engagement>> implements APIE
         this.competitionScraper = competitionScraper;
     }
 
+    public List<Engagement> scrap(Document doc) throws Exception {
+        var engagements = new ArrayList<Engagement>();
+        Elements htmlEngagements = doc.select("table.liste");
+        for (Element htmlEngagement : htmlEngagements) {
+            var engagement = creerEngagement(htmlEngagement);
+            engagements.add(engagement);
+        }
+
+        return engagements;
+    }
+
     private Engagement creerEngagement(Element htmlEngagement) throws Exception {
         var htmlTypeEngagement = ScrapUtils.getFirstElementText(htmlEngagement.getElementsByClass("titre-bloc").first(), "td");
 
         //Parcourir l'engagement et créer les compétitions adéquates
-        var equipesEngages = htmlEngagement
-                .getElementsByTag("tr")
-                .not(".titre-bloc");
+        var equipesEngages = htmlEngagement.getElementsByTag("tr").not(".titre-bloc");
 
         var competitionsEngagees = new HashMap<SexeCompetitionType, List<Competition>>();
 
@@ -54,8 +63,7 @@ public class EngagementScraper extends Scraper<List<Engagement>> implements APIE
                 sexeCompetition = SexeCompetitionType.findByLibelleHtml(firstTableCellText);
                 log.info(sexeCompetition);
             } else if (equipeEngage.hasClass("altern-2") || equipeEngage.hasClass("no-altern-2")) {
-                var competition = creerCompetition(equipeEngage, htmlTypeEngagement);
-                competitions.add(competition);
+                competitions.add(creerCompetition(equipeEngage, htmlTypeEngagement));
             }
         }
         competitionsEngagees.put(sexeCompetition, competitions);
@@ -70,22 +78,5 @@ public class EngagementScraper extends Scraper<List<Engagement>> implements APIE
             return competitionScraper.getData(params.getIdOrganisation(), params.getIdDivision(), params.getIdPoule());
         } else
             return null;
-    }
-
-    @Override
-    public List<Engagement> scrap(Document doc) {
-        var engagements = new ArrayList<Engagement>();
-        try {
-            Elements htmlEngagements = doc.select("table.liste");
-            for (Element htmlEngagement : htmlEngagements) {
-                var engagement = creerEngagement(htmlEngagement);
-                engagements.add(engagement);
-            }
-            System.out.println(engagements);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        return engagements;
     }
 }

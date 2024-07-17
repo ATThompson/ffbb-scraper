@@ -24,8 +24,7 @@ public class OrganisationScraper extends Scraper<Organisation> implements APIOrg
         this.engagementScraper = engagementScraper;
     }
 
-    @Override
-    public Organisation scrap(Document doc) {
+    protected Organisation scrap(Document doc) {
         //TODO: récuperer le nom de l'organisation
         String idOrganisation = getIdOrganisation(doc);
         var ligneInfosOrganisation = ScrapUtils.getFirstElementText(doc, "td.titre-bloc");
@@ -36,8 +35,7 @@ public class OrganisationScraper extends Scraper<Organisation> implements APIOrg
     }
 
     private String getIdOrganisation(Document doc) {
-        return doc.
-                getElementById("idIframeEngagement").
+        return doc.getElementById("idIframeEngagement").
                 attr("src").
                 replaceAll("engagements/|.html", "");
     }
@@ -46,7 +44,7 @@ public class OrganisationScraper extends Scraper<Organisation> implements APIOrg
         String nomOrganisation;
         int nbElementsAttendus = 3, indexNomOrganisation = 0, enleverReferenceEtTypeClub = 2;
         int nbElementsNomOrganisation = infosOrganisation.length - enleverReferenceEtTypeClub;
-        
+
         if (nbElementsAttendus == infosOrganisation.length) {
             nomOrganisation = infosOrganisation[indexNomOrganisation];
         } else {

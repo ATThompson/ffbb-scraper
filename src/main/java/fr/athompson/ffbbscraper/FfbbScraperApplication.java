@@ -1,6 +1,7 @@
 package fr.athompson.ffbbscraper;
 
 import fr.athompson.ffbbscraper.scrapers.classement.APIClassementScraper;
+import fr.athompson.ffbbscraper.scrapers.journee.APIJourneeScraper;
 import fr.athompson.ffbbscraper.scrapers.organisation.APIOrganisationScraper;
 import fr.athompson.ffbbscraper.utils.CompteurAppelSingleton;
 import jakarta.annotation.PostConstruct;
@@ -22,6 +23,8 @@ public class FfbbScraperApplication {
 
     final APIClassementScraper classementScraper;
 
+    final APIJourneeScraper journeeScraper;
+
     final ChromeDriver driver;
 
     public static void main(String[] args) {
@@ -34,7 +37,8 @@ public class FfbbScraperApplication {
         try {
             LocalTime previous = LocalTime.now();
             //AS HESDIGNEUL-HESDIN L'ABBE
-            var t = organisationScraper.getData("28ee");
+            //var t = organisationScraper.getData("28ee");
+            var t = journeeScraper.getData("b5e6211fffeab5e62121f92a7");
             //Coquelles
             //var t = organisationScraper.getData("1a961afb98b");28ee
             ///var t = classementScraper.scrap("b5e6211fe7d7b5e62121c154");
