@@ -1,7 +1,5 @@
 package fr.athompson.ffbbscraper.entities.classement;
 
-import fr.athompson.ffbbscraper.entities.Equipe;
-
 import java.util.ArrayList;
 import java.util.List;
 

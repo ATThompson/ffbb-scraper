@@ -6,10 +6,9 @@ public class DateTimeFormatter {
 
     public final static java.time.format.DateTimeFormatter JJ_MM_AAAA_SLASH_HH_MM = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-    public static LocalDateTime toLocalDateTime(String date, String heureMinutes, java.time.format.DateTimeFormatter format){
+    public static LocalDateTime toLocalDateTime(String date, String heureMinutes, java.time.format.DateTimeFormatter format) {
         String stringToDate = date + ' ' + heureMinutes;
-        return LocalDateTime.parse(stringToDate,format);
+        return LocalDateTime.parse(stringToDate, format);
     }
-
 
 }

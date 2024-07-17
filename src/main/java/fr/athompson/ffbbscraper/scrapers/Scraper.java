@@ -1,35 +1,41 @@
 package fr.athompson.ffbbscraper.scrapers;
 
+import fr.athompson.ffbbscraper.RequisPourScrap;
 import fr.athompson.ffbbscraper.utils.CompteurAppelSingleton;
-import io.github.bonigarcia.wdm.WebDriverManager;
-import lombok.extern.log4j.Log4j;
+import fr.athompson.ffbbscraper.utils.URIBuilder;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.springframework.beans.factory.annotation.Autowired;
-
 
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
-public abstract class Scraper {
+@AllArgsConstructor
+public abstract class Scraper<T> implements RequisPourScrap<T> {
 
-    int nbAppel = 0;
+    final String uri;
 
-    @Autowired
-    ChromeDriver driver;
+    final ChromeDriver driver;
 
-    protected Document getDocument(String uri) throws Exception {
+    private Document getDocument(String uri) {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        CompteurAppelSingleton.getInstance().ajoutUnNombreAppel();
+        driver.get(uri);
+        return Jsoup.parse(driver.getPageSource());
+    }
+
+    public T getData(String... uriParams) {
+        String uriFormatted = URIBuilder.build(uri, uriParams);
+        log.info("URI : {}", uriFormatted);
         try {
-            CompteurAppelSingleton.getInstance().ajoutUnNombreAppel();
-            driver.get(uri);
-            return Jsoup.parse(driver.getPageSource());
-        } finally {
-            //driver.quit();
+            var doc = getDocument(uriFormatted);
+            return scrap(doc);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
+
 }

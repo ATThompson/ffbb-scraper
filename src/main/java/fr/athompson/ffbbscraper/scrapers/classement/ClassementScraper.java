@@ -1,35 +1,33 @@
 package fr.athompson.ffbbscraper.scrapers.classement;
 
 import fr.athompson.ffbbscraper.entities.Equipe;
-import fr.athompson.ffbbscraper.entities.Rencontre;
 import fr.athompson.ffbbscraper.entities.classement.Classement;
 import fr.athompson.ffbbscraper.entities.classement.RowClassement;
 import fr.athompson.ffbbscraper.scrapers.Scraper;
-import fr.athompson.ffbbscraper.utils.DateTimeFormatter;
-import fr.athompson.ffbbscraper.utils.URIBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 
 @Component
 @Slf4j
-public class ClassementScraper extends Scraper implements APIClassementScraper{
-    final String URI = "https://resultats.ffbb.com/championnat/classements/{0}.html";
+public class ClassementScraper extends Scraper<Classement> implements APIClassementScraper {
 
 
-    @Override
-    public Classement scrap(String paramClassement) {
+    public ClassementScraper(@Value("${ffbb.url.classement}") String uri, ChromeDriver driver) {
+        super(uri, driver);
+    }
+
+    public Classement scrap(Document doc) {
         var rowsClassement = new ArrayList<RowClassement>();
-        try{
-            String uri = URIBuilder.build(URI, paramClassement);
-            log.info(uri);
-            Document doc = getDocument(uri);
+        try {
             var tableRowClassement = doc.select("table.list tr[class*=altern-2]");
-            for(Element rowElement:tableRowClassement) {
+            for (Element rowElement : tableRowClassement) {
                 Elements dataRow = rowElement.getAllElements();
                 var oneRowClassement = RowClassement.builder()
                         .position(Integer.valueOf(dataRow.get(1).text()))

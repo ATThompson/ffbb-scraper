@@ -8,9 +8,9 @@ import java.util.regex.Pattern;
 @Getter
 public class Parametres {
 
-    private String idOrganisation;
-    private String idDivision;
-    private String idPoule;
+    private final String idOrganisation;
+    private final String idDivision;
+    private final String idPoule;
 
     public Parametres(String lien) throws Exception {
         Pattern pattern = Pattern.compile("\\.\\./\\.\\./championnat/(.*)\\.html\\?r=(.*)&d=(.*)");
