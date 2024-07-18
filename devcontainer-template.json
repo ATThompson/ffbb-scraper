@@ -1,0 +1,39 @@
+{
+  "id": "ffbb-scraper",
+  "version": "4.0.0",
+  "name": "Java & PostgreSQL",
+  "description": "Develop applications with Java and PostgreSQL. Includes a Java application container and PostgreSQL server.",
+  "documentationURL": "https://github.com/devcontainers/templates/tree/main/src/java-postgres",
+  "publisher": "Dev Container Spec Maintainers",
+  "licenseURL": "https://github.com/devcontainers/templates/blob/main/LICENSE",
+  "options": {
+    "imageVariant": {
+      "type": "string",
+      "description": "Java version (use -bookworm, or -bullseye variants on local arm64/Apple Silicon):",
+      "proposals": [
+        "21-bookworm",
+        "17-bookworm",
+        "11-bookworm",
+        "8-bookworm",
+        "21-bullseye",
+        "17-bullseye",
+        "11-bullseye",
+        "8-bullseye"
+      ],
+      "default": "21-bullseye"
+    },
+    "installMaven": {
+      "type": "boolean",
+      "description": "Install Maven, a management tool for Java",
+      "default": "true"
+    },
+    "installGradle": {
+      "type": "boolean",
+      "description": "Install Gradle, a build automation tool for multi-language software development",
+      "default": "false"
+    }
+  },
+  "platforms": [
+    "Java"
+  ]
+}
