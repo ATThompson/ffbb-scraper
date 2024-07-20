@@ -5,7 +5,7 @@ services:
     container_name: container-dev
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: ../Dockerfile
     #
     # Use "forwardPorts" in **devcontainer.json** to forward an app port locally.
     # (Adding the "ports" property to this file will not forward from a Codespace.)
