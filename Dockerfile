@@ -35,7 +35,7 @@ COPY . .
 RUN mvn clean package -DskipTests
 RUN ECHO "$PWD"
 RUN ls
-ARG JAR_FILE=workspaces/ffbb-scraper/target/ffbb-scraper-0.0.1-SNAPSHOT.jar
+ARG JAR_FILE=target/ffbb-scraper-0.0.1-SNAPSHOT.jar
 COPY ${JAR_FILE} ffbb-scraper.jar
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","/ffbb-scraper"]
