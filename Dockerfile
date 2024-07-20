@@ -29,3 +29,8 @@ RUN unzip /tmp/chromedriver.zip chromedriver -d /usr/local/bin/
 ###
 # REST OF YOUR DOKCERFILE HERE
 ###
+
+EXPOSE 8080
+ARG JAR_FILE=target/ffbb-scraper-0.0.1-SNAPSHOT.jar
+ADD ${JAR_FILE} ffbb-scraper.jar
+ENTRYPOINT ["java","-jar","/app.jar"]
