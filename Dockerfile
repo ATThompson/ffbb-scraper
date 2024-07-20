@@ -30,9 +30,9 @@ RUN unzip /tmp/chromedriver.zip chromedriver -d /usr/local/bin/
 # REST OF YOUR DOKCERFILE HERE
 ###
 
-WORKDIR workspaces/ffbb-scraper
+# WORKDIR workspaces/ffbb-scraper
 COPY . .
-RUN mvn clean install
+RUN mvn clean package -DskipTests
 ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} ffbb-scraper.jar
 EXPOSE 8080
