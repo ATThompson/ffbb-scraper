@@ -42,7 +42,7 @@ ARG JAR_FILE=target/ffbb-scraper-0.0.1-SNAPSHOT.jar
 COPY --from=build ${JAR_FILE} ffbb-scraper.jar
 # ENV PORT=8080
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","demo.jar"]
+ENTRYPOINT ["java","-jar","ffbb-scraper.jar"]
 #COPY . .
 #RUN mvn clean package -DskipTests
 #ARG JAR_FILE=target/ffbb-scraper-0.0.1-SNAPSHOT.jar
