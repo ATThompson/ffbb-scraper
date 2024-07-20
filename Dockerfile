@@ -33,8 +33,7 @@ RUN unzip /tmp/chromedriver.zip chromedriver -d /usr/local/bin/
 # WORKDIR workspaces/ffbb-scraper
 COPY . .
 RUN mvn clean package -DskipTests
-RUN ECHO "$PWD"
-RUN ls
-COPY --from=build /build/target/ffbb-scraper-0.0.1-SNAPSHOT.jar ffbb-scraper.jar
+ARG JAR_FILE=target/ffbb-scraper-0.0.1-SNAPSHOT.jar
+COPY ${JAR_FILE} ffbb-scraper.jar
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","/ffbb-scraper"]
+ENTRYPOINT ["java","-jar","ffbb-scraper.jar"]
