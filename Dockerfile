@@ -36,7 +36,7 @@ RUN unzip /tmp/chromedriver.zip chromedriver -d /usr/local/bin/
 
 # WORKDIR workspaces/ffbb-scraper
 
-ARG JAR_FILE=target/ffbb-scraper-0.0.1-SNAPSHOT.jar
+ARG JAR_FILE=application/target/application-0.0.1-SNAPSHOT.jar
 COPY --from=build ${JAR_FILE} ffbb-scraper.jar
 # ENV PORT=8080
 EXPOSE 8080
