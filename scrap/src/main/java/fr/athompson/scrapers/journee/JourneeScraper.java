@@ -4,6 +4,7 @@ import fr.athompson.entities.Equipe;
 import fr.athompson.entities.Journee;
 import fr.athompson.entities.Rencontre;
 import fr.athompson.scrapers.Scraper;
+import fr.athompson.scrapers.api.APIJourneeScraper;
 import fr.athompson.utils.DateTimeFormatter;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;

@@ -1,8 +1,8 @@
 package fr.athompson;
 
-import fr.athompson.scrapers.classement.APIClassementScraper;
-import fr.athompson.scrapers.journee.APIJourneeScraper;
-import fr.athompson.scrapers.organisation.APIOrganisationScraper;
+import fr.athompson.scrapers.api.APIClassementScraper;
+import fr.athompson.scrapers.api.APIJourneeScraper;
+import fr.athompson.scrapers.api.APIOrganisationScraper;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

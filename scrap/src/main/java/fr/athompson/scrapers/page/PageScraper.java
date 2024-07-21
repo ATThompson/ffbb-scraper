@@ -1,6 +1,7 @@
 package fr.athompson.scrapers.page;
 
 import fr.athompson.scrapers.Scraper;
+import fr.athompson.scrapers.api.APIPageScaper;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;

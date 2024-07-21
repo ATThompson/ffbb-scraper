@@ -4,6 +4,7 @@ import fr.athompson.entities.Equipe;
 import fr.athompson.entities.classement.Classement;
 import fr.athompson.entities.classement.RowClassement;
 import fr.athompson.scrapers.Scraper;
+import fr.athompson.scrapers.api.APIClassementScraper;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
