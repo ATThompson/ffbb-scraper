@@ -1,4 +1,8 @@
-FROM mcr.microsoft.com/devcontainers/java:1-21-bullseye
+FROM maven:3.9.8-sapmachine-21 AS build
+COPY . .
+RUN mvn clean package
+
+FROM openjdk:21-jdk-bullseye
 
 ARG INSTALL_MAVEN="true"
 ARG MAVEN_VERSION=""
@@ -32,12 +36,6 @@ RUN unzip /tmp/chromedriver.zip chromedriver -d /usr/local/bin/
 
 # WORKDIR workspaces/ffbb-scraper
 
-FROM maven:3.9.8-sapmachine-21 AS build
-COPY . .
-RUN mvn clean package
-
-
-FROM openjdk:21-jdk-bullseye
 ARG JAR_FILE=target/ffbb-scraper-0.0.1-SNAPSHOT.jar
 COPY --from=build ${JAR_FILE} ffbb-scraper.jar
 # ENV PORT=8080
