@@ -18,6 +18,8 @@
         <module>application</module>
         <module>scrap</module>
         <module>cron</module>
+        <module>database</module>
+        <module>api</module>
     </modules>
     <properties>
         <java.version>21</java.version>

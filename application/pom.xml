@@ -18,7 +18,16 @@
     </properties>
 
     <dependencies>
-
+        <dependency>
+            <groupId>fr.athompson</groupId>
+            <artifactId>database</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>fr.athompson</groupId>
+            <artifactId>api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>fr.athompson</groupId>
             <artifactId>cron</artifactId>
@@ -29,6 +38,7 @@
             <artifactId>scrap</artifactId>
             <version>${project.version}</version>
         </dependency>
+
     </dependencies>
     <build>
         <plugins>
