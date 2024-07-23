@@ -1,10 +1,9 @@
 package fr.athompson.scrap.scrapers.organisation;
 
-import fr.athompson.scrap.entities.Organisation;
-import fr.athompson.scrap.entities.engagement.Engagement;
+import fr.athompson.scrap.entities.OrganisationScrap;
+import fr.athompson.scrap.entities.engagement.EngagementScrap;
 import fr.athompson.scrap.scrapers.Scraper;
-import fr.athompson.scrap.scrapers.api.APIEngagementScraper;
-import fr.athompson.scrap.scrapers.api.APIOrganisationScraper;
+import fr.athompson.scrap.scrapers.engagement.EngagementScraper;
 import fr.athompson.scrap.utils.ScrapUtils;
 import org.jsoup.nodes.Document;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -16,23 +15,23 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class OrganisationScraper extends Scraper<Organisation> implements APIOrganisationScraper {
+public class OrganisationScraper extends Scraper<OrganisationScrap>{
 
-    APIEngagementScraper engagementScraper;
+    EngagementScraper engagementScraper;
 
-    public OrganisationScraper(@Value("${ffbb.url.organisation}") String uri, ChromeDriver driver, APIEngagementScraper engagementScraper) {
+    public OrganisationScraper(@Value("${ffbb.url.organisation}") String uri, ChromeDriver driver, EngagementScraper engagementScraper) {
         super(uri, driver);
         this.engagementScraper = engagementScraper;
     }
 
-    protected Organisation scrap(Document doc) {
+    protected OrganisationScrap scrap(Document doc) {
         //TODO: récuperer le nom de l'organisation
         String idOrganisation = getIdOrganisation(doc);
         var ligneInfosOrganisation = ScrapUtils.getFirstElementText(doc, "td.titre-bloc");
         var infosClub = ligneInfosOrganisation.split("-");
         String nomOrganisation = getNomOrganisation(infosClub);
-        List<Engagement> engagements = engagementScraper.getData(idOrganisation);
-        return new Organisation(nomOrganisation, engagements);
+        List<EngagementScrap> engagementScraps = engagementScraper.getData(idOrganisation);
+        return new OrganisationScrap(nomOrganisation, engagementScraps);
     }
 
     private String getIdOrganisation(Document doc) {

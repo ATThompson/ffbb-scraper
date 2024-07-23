@@ -1,15 +1,11 @@
 package fr.athompson;
 
-import fr.athompson.scrap.scrapers.api.APIClassementScraper;
-import fr.athompson.scrap.scrapers.api.APIJourneeScraper;
-import fr.athompson.scrap.scrapers.api.APIOrganisationScraper;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.time.Duration;
@@ -21,11 +17,6 @@ import java.time.LocalTime;
 @RequiredArgsConstructor
 public class Application {
 
-    final APIOrganisationScraper organisationScraper;
-
-    final APIClassementScraper classementScraper;
-
-    final APIJourneeScraper journeeScraper;
 
     final ChromeDriver driver;
 

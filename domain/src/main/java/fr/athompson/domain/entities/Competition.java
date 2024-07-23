@@ -1,6 +1,6 @@
-package fr.athompson.scrap.entities;
+package fr.athompson.domain.entities;
 
-import fr.athompson.scrap.entities.classement.Classement;
+import fr.athompson.domain.entities.classement.Classement;
 
 import java.util.List;
 

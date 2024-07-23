@@ -1,7 +1,6 @@
 package fr.athompson.scrap.scrapers.page;
 
 import fr.athompson.scrap.scrapers.Scraper;
-import fr.athompson.scrap.scrapers.api.APIPageScaper;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class PageScraper extends Scraper<Integer> implements APIPageScaper {
+public class PageScraper extends Scraper<Integer>{
 
     public PageScraper(@Value("${ffbb.url.page}") String uri, ChromeDriver driver) {
         super(uri, driver);

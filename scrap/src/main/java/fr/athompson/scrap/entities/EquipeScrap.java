@@ -1,4 +1,4 @@
 package fr.athompson.scrap.entities;
 
-public record Equipe(String nom) {
+public record EquipeScrap(String nom) {
 }

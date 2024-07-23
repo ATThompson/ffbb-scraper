@@ -1,4 +1,4 @@
-package fr.athompson.scrap.entities;
+package fr.athompson.domain.entities;
 
 import lombok.Builder;
 

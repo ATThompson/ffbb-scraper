@@ -1,6 +1,6 @@
-package fr.athompson.scrap.entities;
+package fr.athompson.domain.entities;
 
-import fr.athompson.scrap.entities.engagement.Engagement;
+import fr.athompson.domain.entities.engagement.Engagement;
 
 import java.util.List;
 

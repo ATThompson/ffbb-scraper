@@ -1,10 +1,9 @@
 package fr.athompson.scrap.scrapers.classement;
 
-import fr.athompson.scrap.entities.Equipe;
-import fr.athompson.scrap.entities.classement.Classement;
+import fr.athompson.scrap.entities.EquipeScrap;
+import fr.athompson.scrap.entities.classement.ClassementScrap;
 import fr.athompson.scrap.entities.classement.RowClassement;
 import fr.athompson.scrap.scrapers.Scraper;
-import fr.athompson.scrap.scrapers.api.APIClassementScraper;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -17,13 +16,13 @@ import java.util.ArrayList;
 
 @Component
 @Slf4j
-public class ClassementScraper extends Scraper<Classement> implements APIClassementScraper {
+public class ClassementScraper extends Scraper<ClassementScrap>{
 
     public ClassementScraper(@Value("${ffbb.url.classement}") String uri, ChromeDriver driver) {
         super(uri, driver);
     }
 
-    public Classement scrap(Document doc) {
+    public ClassementScrap scrap(Document doc) {
         var rowsClassement = new ArrayList<RowClassement>();
         var tableRowClassement = doc.select("table.list tr[class*=altern-2]");
         for (Element rowElement : tableRowClassement) {
@@ -31,13 +30,13 @@ public class ClassementScraper extends Scraper<Classement> implements APIClassem
             var oneRowClassement = getOneRowClassement(dataRow);
             rowsClassement.add(oneRowClassement);
         }
-        return new Classement(rowsClassement);
+        return new ClassementScrap(rowsClassement);
     }
 
     private RowClassement getOneRowClassement(Elements dataRow) {
         return RowClassement.builder()
                 .position(Integer.valueOf(dataRow.get(1).text()))
-                .equipe(new Equipe(dataRow.get(3).text()))
+                .equipeScrap(new EquipeScrap(dataRow.get(3).text()))
                 .points(Integer.valueOf(dataRow.get(4).text()))
                 .matchJoues(Integer.valueOf(dataRow.get(5).text()))
                 .matchGagnes(Integer.valueOf(dataRow.get(6).text()))

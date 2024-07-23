@@ -20,6 +20,7 @@
         <module>cron</module>
         <module>database</module>
         <module>api</module>
+        <module>domain</module>
     </modules>
     <properties>
         <java.version>21</java.version>

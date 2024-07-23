@@ -1,12 +1,12 @@
-package fr.athompson.scrap.entities.engagement.factory;
+package fr.athompson.domain.entities.engagement.factory;
 
-import fr.athompson.scrap.entities.Competition;
-import fr.athompson.scrap.entities.engagement.Engagement;
-import fr.athompson.scrap.entities.engagement.EngagementChampionnat;
-import fr.athompson.scrap.entities.engagement.EngagementCoupe;
-import fr.athompson.scrap.entities.engagement.EngagementPlateau;
-import fr.athompson.scrap.enums.EngagementType;
-import fr.athompson.scrap.enums.SexeCompetitionType;
+import fr.athompson.domain.entities.Competition;
+import fr.athompson.domain.entities.engagement.Engagement;
+import fr.athompson.domain.entities.engagement.EngagementChampionnat;
+import fr.athompson.domain.entities.engagement.EngagementCoupe;
+import fr.athompson.domain.entities.engagement.EngagementPlateau;
+import fr.athompson.domain.enums.EngagementType;
+import fr.athompson.domain.enums.SexeCompetitionType;
 
 import java.util.List;
 import java.util.Map;

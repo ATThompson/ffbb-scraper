@@ -1,7 +1,7 @@
-package fr.athompson.scrap.entities.engagement;
+package fr.athompson.domain.entities.engagement;
 
-import fr.athompson.scrap.enums.SexeCompetitionType;
-import fr.athompson.scrap.entities.Competition;
+import fr.athompson.domain.entities.Competition;
+import fr.athompson.domain.enums.SexeCompetitionType;
 
 import java.util.List;
 import java.util.Map;

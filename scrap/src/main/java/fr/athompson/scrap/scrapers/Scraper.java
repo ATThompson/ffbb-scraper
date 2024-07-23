@@ -38,4 +38,5 @@ public abstract class Scraper<T> {
     }
 
     protected abstract T scrap(Document doc) throws Exception;
+
 }

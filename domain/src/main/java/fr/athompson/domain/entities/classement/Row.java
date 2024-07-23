@@ -1,12 +1,12 @@
-package fr.athompson.scrap.entities.classement;
+package fr.athompson.domain.entities.classement;
 
-import fr.athompson.scrap.entities.EquipeScrap;
+import fr.athompson.domain.entities.Equipe;
 import lombok.Builder;
 
 @Builder
-public record RowClassement(
+public record Row(
         Integer position,
-        EquipeScrap equipeScrap,
+        Equipe equipe,
         Integer points,
         Integer matchJoues,
         Integer matchGagnes,

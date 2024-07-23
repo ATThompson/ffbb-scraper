@@ -1,14 +1,12 @@
 package fr.athompson.scrap.scrapers.competition;
 
-import fr.athompson.scrap.entities.Competition;
-import fr.athompson.scrap.entities.Journee;
-import fr.athompson.scrap.entities.classement.Classement;
+import fr.athompson.scrap.entities.CompetitionScrap;
+import fr.athompson.scrap.entities.JourneeScrap;
+import fr.athompson.scrap.entities.classement.ClassementScrap;
 import fr.athompson.scrap.scrapers.Scraper;
-import fr.athompson.scrap.scrapers.api.APIClassementScraper;
-import fr.athompson.scrap.scrapers.api.APICompetitionScraper;
-import fr.athompson.scrap.scrapers.api.APIJourneeScraper;
+import fr.athompson.scrap.scrapers.classement.ClassementScraper;
 import fr.athompson.scrap.scrapers.journee.JourneeScraper;
-import fr.athompson.scrap.scrapers.api.APIPageScaper;
+import fr.athompson.scrap.scrapers.page.PageScraper;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -20,32 +18,33 @@ import java.util.ArrayList;
 
 @Component
 @Slf4j
-public class CompetitionScraper extends Scraper<Competition> implements APICompetitionScraper {
+public class CompetitionScraper extends Scraper<CompetitionScrap> {
 
-    APIPageScaper pageScaper;
+    PageScraper pageScaper;
 
-    APIJourneeScraper journeeScraper;
+    JourneeScraper journeeScraper;
 
-    APIClassementScraper classementScraper;
+    ClassementScraper classementScraper;
 
-    public CompetitionScraper(@Value("${ffbb.url.competition}") String uri, ChromeDriver driver, JourneeScraper journeeScraper, APIPageScaper pageScaper, APIClassementScraper classementScraper) {
+    public CompetitionScraper(@Value("${ffbb.url.competition}") String uri, ChromeDriver driver, JourneeScraper journeeScraper, PageScraper pageScaper, ClassementScraper classementScraper) {
         super(uri, driver);
         this.journeeScraper = journeeScraper;
         this.pageScaper = pageScaper;
         this.classementScraper = classementScraper;
     }
 
-    protected Competition scrap(Document doc) {
-        var journees = new ArrayList<Journee>();
+    protected CompetitionScrap scrap(Document doc) {
+        var journees = new ArrayList<JourneeScrap>();
         String identifiantClassement = getIdentifiantClassement(doc);
         Integer nbPages = pageScaper.getData(identifiantClassement);
         log.info("Nombre de page : {} ", nbPages);
         for (int page = 1; page <= nbPages; page++) {
             journees.add(journeeScraper.getData(identifiantClassement + Integer.toHexString(page)));
         }
-        Classement classement = classementScraper.getData(identifiantClassement);
-        return new Competition(classement, journees, null);
+        ClassementScrap classementScrap = classementScraper.getData(identifiantClassement);
+        return new CompetitionScrap(classementScrap, journees, null);
     }
+
 
     private String getIdentifiantClassement(Document doc) {
         Element td = doc.getElementById("idTableCoupeChampionnat");

@@ -1,10 +1,9 @@
 package fr.athompson.scrap.scrapers.journee;
 
-import fr.athompson.scrap.entities.Equipe;
-import fr.athompson.scrap.entities.Journee;
-import fr.athompson.scrap.entities.Rencontre;
+import fr.athompson.scrap.entities.EquipeScrap;
+import fr.athompson.scrap.entities.JourneeScrap;
+import fr.athompson.scrap.entities.RencontreScrap;
 import fr.athompson.scrap.scrapers.Scraper;
-import fr.athompson.scrap.scrapers.api.APIJourneeScraper;
 import fr.athompson.scrap.utils.DateTimeFormatter;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
@@ -20,7 +19,7 @@ import java.util.Arrays;
 
 @Component
 @Slf4j
-public class JourneeScraper extends Scraper<Journee> implements APIJourneeScraper {
+public class JourneeScraper extends Scraper<JourneeScrap>{
 
     public JourneeScraper(@Value("${ffbb.url.journee}") String uri, ChromeDriver driver) {
         super(uri, driver);
@@ -28,8 +27,8 @@ public class JourneeScraper extends Scraper<Journee> implements APIJourneeScrape
 
     //TODO: Créer un rencontre scraper et enlever la partie rencontre
 
-    protected Journee scrap(Document doc) {
-        var rencontres = new ArrayList<Rencontre>();
+    protected JourneeScrap scrap(Document doc) {
+        var rencontres = new ArrayList<RencontreScrap>();
 
         var tableRowRencontre = doc.select("tr[class*=altern-2]").not("[style='display:none']");
         for (Element rencontreElement : tableRowRencontre) {
@@ -37,12 +36,13 @@ public class JourneeScraper extends Scraper<Journee> implements APIJourneeScrape
             rencontres.add(getRencontre(dataRencontre));
         }
 
-        return new Journee(rencontres);
+        return new JourneeScrap(rencontres);
     }
 
-    private Rencontre getRencontre(Elements dataRencontre) {
+
+    private RencontreScrap getRencontre(Elements dataRencontre) {
         Integer[] scores = getScoreEquipes(dataRencontre.get(8).text());
-        return Rencontre.builder()
+        return RencontreScrap.builder()
                 .numeroRencontre(
                         Integer.valueOf(dataRencontre.get(1).text()))
                 .date(
@@ -50,8 +50,8 @@ public class JourneeScraper extends Scraper<Journee> implements APIJourneeScrape
                                 dataRencontre.get(2).text(),
                                 dataRencontre.get(3).text(),
                                 DateTimeFormatter.JJ_MM_AAAA_SLASH_HH_MM))
-                .equipeDomicile(new Equipe(dataRencontre.get(5).text()))
-                .equipeVisiteur(new Equipe(dataRencontre.get(7).text()))
+                .equipeScrapDomicile(new EquipeScrap(dataRencontre.get(5).text()))
+                .equipeScrapVisiteur(new EquipeScrap(dataRencontre.get(7).text()))
                 .scoreDomicile(scores[0])
                 .scoreVisiteur(scores[1])
                 .build();
