@@ -1,7 +1,6 @@
 package fr.athompson;
 
 import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.boot.SpringApplication;
@@ -14,11 +13,14 @@ import java.time.LocalTime;
 @Slf4j
 @SpringBootApplication
 @EnableScheduling
-@RequiredArgsConstructor
 public class Application {
 
 
     final ChromeDriver driver;
+
+    public Application(ChromeDriver driver) {
+        this.driver = driver;
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
@@ -43,9 +45,6 @@ public class Application {
             //System.out.println("finiiiii " + CompteurAppelSingleton.getInstance().getNbAppel() + " " + formattedDuration);
         } catch (Exception e) {
             throw new RuntimeException(e);
-        } finally {
-            log.info("finally scope");
-            // driver.quit();
         }
     }
 

@@ -37,11 +37,12 @@ public class CompetitionScraper extends Scraper<CompetitionScrap> {
         var journees = new ArrayList<JourneeScrap>();
         String identifiantClassement = getIdentifiantClassement(doc);
         Integer nbPages = pageScaper.getData(identifiantClassement);
-        log.info("Nombre de page : {} ", nbPages);
+        log.info("Nombre de journees : {} ", nbPages);
         for (int page = 1; page <= nbPages; page++) {
             journees.add(journeeScraper.getData(identifiantClassement + Integer.toHexString(page)));
         }
         ClassementScrap classementScrap = classementScraper.getData(identifiantClassement);
+        //TODO ajouter le nombre de poule
         return new CompetitionScrap(classementScrap, journees, null);
     }
 

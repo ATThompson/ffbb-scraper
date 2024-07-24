@@ -1,7 +1,7 @@
 package fr.athompson.scrap.scrapers;
 
-import fr.athompson.scrap.utils.CompteurAppelSingleton;
-import fr.athompson.scrap.utils.URIBuilder;
+import fr.athompson.scrap.scrapers.utils.CompteurAppelSingleton;
+import fr.athompson.scrap.scrapers.utils.URIBuilder;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;

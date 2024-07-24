@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 @Builder
 public record RencontreScrap(Integer numeroRencontre,
                              LocalDateTime date,
-                             EquipeScrap equipeScrapDomicile,
-                             EquipeScrap equipeScrapVisiteur,
+                             EquipeScrap equipeDomicile,
+                             EquipeScrap equipeVisiteur,
                              Integer scoreDomicile,
                              Integer scoreVisiteur) {
 }

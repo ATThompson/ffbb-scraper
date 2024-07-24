@@ -1,21 +1,34 @@
 package fr.athompson.scrap.mappers;
 
 import fr.athompson.domain.entities.engagement.Engagement;
+import fr.athompson.domain.entities.engagement.EngagementChampionnat;
+import fr.athompson.domain.entities.engagement.EngagementCoupe;
+import fr.athompson.domain.entities.engagement.EngagementPlateau;
 import fr.athompson.scrap.entities.engagement.EngagementScrap;
-import fr.athompson.scrap.scrapers.Scraper;
-import org.springframework.stereotype.Component;
+import fr.athompson.scrap.entities.engagement.EngagementScrapChampionnat;
+import fr.athompson.scrap.entities.engagement.EngagementScrapCoupe;
+import fr.athompson.scrap.entities.engagement.EngagementScrapPlateau;
+import org.mapstruct.Mapper;
+import org.mapstruct.SubclassExhaustiveStrategy;
 
-import java.util.List;
+@Mapper(componentModel = "spring", subclassExhaustiveStrategy = SubclassExhaustiveStrategy.RUNTIME_EXCEPTION)
+public interface EngagementMapper {
 
-@Component
-public class EngagementMapper extends Mapper<List<EngagementScrap>, List<Engagement>> {
+    EngagementChampionnat toDomain(EngagementScrapChampionnat engagementScrap);
 
-    public EngagementMapper(Scraper<List<EngagementScrap>> scraper) {
-        super(scraper);
-    }
+    EngagementCoupe toDomain(EngagementScrapCoupe engagementScrap);
 
-    @Override
-    List<Engagement> map(List<EngagementScrap> engagementScraps) {
-        return List.of();
+    EngagementPlateau toDomain(EngagementScrapPlateau engagementScrap);
+
+    default Engagement mapToVehicleDTO(EngagementScrap engagementScrap) {
+        if (engagementScrap instanceof EngagementScrapChampionnat) {
+            return toDomain((EngagementScrapChampionnat) engagementScrap);
+        } else if (engagementScrap instanceof EngagementScrapCoupe) {
+            return toDomain((EngagementScrapCoupe) engagementScrap);
+        } else if (engagementScrap instanceof EngagementScrapPlateau) {
+            return toDomain((EngagementScrapPlateau) engagementScrap);
+        } else {
+            return null;
+        }
     }
 }

@@ -2,7 +2,7 @@ package fr.athompson.scrap.scrapers.classement;
 
 import fr.athompson.scrap.entities.EquipeScrap;
 import fr.athompson.scrap.entities.classement.ClassementScrap;
-import fr.athompson.scrap.entities.classement.RowClassement;
+import fr.athompson.scrap.entities.classement.RowClassementScrap;
 import fr.athompson.scrap.scrapers.Scraper;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
@@ -16,14 +16,14 @@ import java.util.ArrayList;
 
 @Component
 @Slf4j
-public class ClassementScraper extends Scraper<ClassementScrap>{
+public class ClassementScraper extends Scraper<ClassementScrap> {
 
     public ClassementScraper(@Value("${ffbb.url.classement}") String uri, ChromeDriver driver) {
         super(uri, driver);
     }
 
     public ClassementScrap scrap(Document doc) {
-        var rowsClassement = new ArrayList<RowClassement>();
+        var rowsClassement = new ArrayList<RowClassementScrap>();
         var tableRowClassement = doc.select("table.list tr[class*=altern-2]");
         for (Element rowElement : tableRowClassement) {
             Elements dataRow = rowElement.getAllElements();
@@ -33,10 +33,10 @@ public class ClassementScraper extends Scraper<ClassementScrap>{
         return new ClassementScrap(rowsClassement);
     }
 
-    private RowClassement getOneRowClassement(Elements dataRow) {
-        return RowClassement.builder()
+    private RowClassementScrap getOneRowClassement(Elements dataRow) {
+        return RowClassementScrap.builder()
                 .position(Integer.valueOf(dataRow.get(1).text()))
-                .equipeScrap(new EquipeScrap(dataRow.get(3).text()))
+                .equipe(new EquipeScrap(dataRow.get(3).text()))
                 .points(Integer.valueOf(dataRow.get(4).text()))
                 .matchJoues(Integer.valueOf(dataRow.get(5).text()))
                 .matchGagnes(Integer.valueOf(dataRow.get(6).text()))

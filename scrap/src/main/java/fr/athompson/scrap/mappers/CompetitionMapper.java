@@ -2,17 +2,9 @@ package fr.athompson.scrap.mappers;
 
 import fr.athompson.domain.entities.Competition;
 import fr.athompson.scrap.entities.CompetitionScrap;
-import fr.athompson.scrap.scrapers.Scraper;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
 
-@Component
-public class CompetitionMapper extends Mapper<CompetitionScrap, Competition> {
-    public CompetitionMapper(Scraper<CompetitionScrap> scraper) {
-        super(scraper);
-    }
-
-    @Override
-    Competition map(CompetitionScrap competitionScrap) {
-        return null;
-    }
+@Mapper(componentModel = "spring", uses = {ClassementMapper.class, JourneeMapper.class, EquipeMapper.class})
+public interface CompetitionMapper {
+    Competition toDomain(CompetitionScrap competitionScrap);
 }

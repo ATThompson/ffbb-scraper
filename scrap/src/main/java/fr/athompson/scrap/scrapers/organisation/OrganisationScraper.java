@@ -4,7 +4,7 @@ import fr.athompson.scrap.entities.OrganisationScrap;
 import fr.athompson.scrap.entities.engagement.EngagementScrap;
 import fr.athompson.scrap.scrapers.Scraper;
 import fr.athompson.scrap.scrapers.engagement.EngagementScraper;
-import fr.athompson.scrap.utils.ScrapUtils;
+import fr.athompson.scrap.scrapers.utils.ScrapUtils;
 import org.jsoup.nodes.Document;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class OrganisationScraper extends Scraper<OrganisationScrap>{
+public class OrganisationScraper extends Scraper<OrganisationScrap> {
 
     EngagementScraper engagementScraper;
 

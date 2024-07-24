@@ -7,7 +7,7 @@ import fr.athompson.scrap.enums.EngagementType;
 import fr.athompson.scrap.enums.SexeCompetitionType;
 import fr.athompson.scrap.scrapers.Scraper;
 import fr.athompson.scrap.scrapers.competition.CompetitionScraper;
-import fr.athompson.scrap.utils.ScrapUtils;
+import fr.athompson.scrap.scrapers.utils.ScrapUtils;
 import lombok.extern.log4j.Log4j2;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -35,14 +35,18 @@ public class EngagementScraper extends Scraper<List<EngagementScrap>> {
         var engagements = new ArrayList<EngagementScrap>();
         Elements htmlEngagements = doc.select("table.liste");
         for (Element htmlEngagement : htmlEngagements) {
-            var engagement = creerEngagement(htmlEngagement);
-            engagements.add(engagement);
+            log.info(htmlEngagement.getAllElements().size());
+            if (htmlEngagement.getAllElements().size() > 1) {
+                var engagement = creerEngagement(htmlEngagement);
+                engagements.add(engagement);
+            }
         }
 
         return engagements;
     }
 
     private EngagementScrap creerEngagement(Element htmlEngagement) throws Exception {
+
         var htmlTypeEngagement = ScrapUtils.getFirstElementText(htmlEngagement.getElementsByClass("titre-bloc").first(), "td");
 
         //Parcourir l'engagement et créer les compétitions adéquates
@@ -74,9 +78,12 @@ public class EngagementScraper extends Scraper<List<EngagementScrap>> {
         String lienCompetition = equipeEngage.select("a").attr("href");
         var params = new Parametres(lienCompetition);
         //TODO on focus sur le championnat pour le moment
+        CompetitionScrap competitionScrap;
         if (EngagementType.findByLibelleHtml(htmlTypeEngagement) == EngagementType.CHAMPIONNAT) {
-            return competitionScraper.getData(params.getIdOrganisation(), params.getIdDivision(), params.getIdPoule());
+            competitionScrap = competitionScraper.getData(params.getIdOrganisation(), params.getIdDivision(), params.getIdPoule());
         } else
             return null;
+        //TODO Ajouter niveau,divisoin,categorie,type,sexe
+        return competitionScrap;
     }
 }

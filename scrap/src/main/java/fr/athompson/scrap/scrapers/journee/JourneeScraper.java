@@ -4,7 +4,7 @@ import fr.athompson.scrap.entities.EquipeScrap;
 import fr.athompson.scrap.entities.JourneeScrap;
 import fr.athompson.scrap.entities.RencontreScrap;
 import fr.athompson.scrap.scrapers.Scraper;
-import fr.athompson.scrap.utils.DateTimeFormatter;
+import fr.athompson.scrap.scrapers.utils.DateTimeFormatter;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -19,7 +19,7 @@ import java.util.Arrays;
 
 @Component
 @Slf4j
-public class JourneeScraper extends Scraper<JourneeScrap>{
+public class JourneeScraper extends Scraper<JourneeScrap> {
 
     public JourneeScraper(@Value("${ffbb.url.journee}") String uri, ChromeDriver driver) {
         super(uri, driver);
@@ -50,8 +50,8 @@ public class JourneeScraper extends Scraper<JourneeScrap>{
                                 dataRencontre.get(2).text(),
                                 dataRencontre.get(3).text(),
                                 DateTimeFormatter.JJ_MM_AAAA_SLASH_HH_MM))
-                .equipeScrapDomicile(new EquipeScrap(dataRencontre.get(5).text()))
-                .equipeScrapVisiteur(new EquipeScrap(dataRencontre.get(7).text()))
+                .equipeDomicile(new EquipeScrap(dataRencontre.get(5).text()))
+                .equipeVisiteur(new EquipeScrap(dataRencontre.get(7).text()))
                 .scoreDomicile(scores[0])
                 .scoreVisiteur(scores[1])
                 .build();
