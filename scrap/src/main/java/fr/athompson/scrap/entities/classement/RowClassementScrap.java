@@ -12,10 +12,10 @@ public record RowClassementScrap(
         Integer matchGagnes,
         Integer matchPerdus,
         Integer matchNuls,
-        Integer matchPenalite,
-        Integer matchForfait,
+        Integer matchPenalites,
+        Integer matchForfaits,
         Integer pointsMarques,
         Integer pointsEncaisses,
-        Integer difference
+        Integer pointsDifference
 ) {
 }

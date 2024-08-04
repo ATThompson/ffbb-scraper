@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Setter
 @Entity
 @Table(name = "rencontres")
-public class Rencontre {
+public class RencontreDB {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rencontres_id_gen")
     @SequenceGenerator(name = "rencontres_id_gen", sequenceName = "rencontres_id_seq", allocationSize = 1)
@@ -20,22 +20,22 @@ public class Rencontre {
     @Column(name = "date", nullable = false)
     private LocalDate date;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "equipe_domicile_id", nullable = false)
-    private Equipe equipeDomicile;
+    private EquipeDB equipeDomicile;
 
-    @Column(name = "score_equipe_domicile", nullable = false)
-    private Integer scoreEquipeDomicile;
+    @Column(name = "score_domicile", nullable = false)
+    private Integer scoreDomicile;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "equipe_visiteur_id", nullable = false)
-    private Equipe equipeVisiteur;
+    private EquipeDB equipeVisiteur;
 
-    @Column(name = "score_equipe_exterieur", nullable = false)
-    private Integer scoreEquipeExterieur;
+    @Column(name = "score_visiteur", nullable = false)
+    private Integer scoreVisiteur;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "journee_id", nullable = false)
-    private Journee journee;
+    private JourneeDB journee;
 
 }

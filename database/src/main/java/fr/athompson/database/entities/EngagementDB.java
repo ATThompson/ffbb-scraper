@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "engagements")
-public class Engagement {
+public class EngagementDB {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "engagements_id_gen")
     @SequenceGenerator(name = "engagements_id_gen", sequenceName = "engagements_id_seq", allocationSize = 1)
@@ -18,16 +18,16 @@ public class Engagement {
     @Column(name = "poule")
     private String poule;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "equipe_id", nullable = false)
-    private Equipe equipe;
+    private EquipeDB equipe;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "competition_id", nullable = false)
-    private Competition competition;
+    private CompetitionDB competition;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "organisation_id", nullable = false)
-    private Organisation organisation;
+    private OrganisationDB organisation;
 
 }

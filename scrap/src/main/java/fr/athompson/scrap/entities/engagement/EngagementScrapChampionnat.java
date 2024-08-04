@@ -2,17 +2,18 @@ package fr.athompson.scrap.entities.engagement;
 
 import fr.athompson.scrap.enums.SexeCompetitionType;
 import fr.athompson.scrap.entities.CompetitionScrap;
+import lombok.AllArgsConstructor;
 
 import java.util.List;
 import java.util.Map;
 
+
 public class EngagementScrapChampionnat extends EngagementScrap {
 
-    public EngagementScrapChampionnat(Map<SexeCompetitionType, List<CompetitionScrap>> championnatsEngages) {
-        super(championnatsEngages);
+    public EngagementScrapChampionnat() {
     }
 
-    public EngagementScrapChampionnat() {
-        super();
+    public EngagementScrapChampionnat(CompetitionScrap competitionEngagee, String poule) {
+        super(competitionEngagee, poule);
     }
 }

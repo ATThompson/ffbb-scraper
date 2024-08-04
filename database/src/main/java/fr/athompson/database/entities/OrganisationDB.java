@@ -4,14 +4,11 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 @Getter
 @Setter
 @Entity
 @Table(name = "organisations")
-public class Organisation {
+public class OrganisationDB {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "organisations_id_gen")
     @SequenceGenerator(name = "organisations_id_gen", sequenceName = "organisations_id_seq", allocationSize = 1)
@@ -21,7 +18,7 @@ public class Organisation {
     @Column(name = "nom", nullable = false)
     private String nom;
 
-    @OneToMany(mappedBy = "organisation")
-    private Set<Engagement> engagements = new LinkedHashSet<>();
+    @Column(name = "organisation_id_html", nullable = false)
+    private String organisationIdHtml;
 
 }

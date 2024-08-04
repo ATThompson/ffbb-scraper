@@ -31,13 +31,13 @@ public class OrganisationScraper extends Scraper<OrganisationScrap> {
         var infosClub = ligneInfosOrganisation.split("-");
         String nomOrganisation = getNomOrganisation(infosClub);
         List<EngagementScrap> engagementScraps = engagementScraper.getData(idOrganisation);
-        return new OrganisationScrap(nomOrganisation, engagementScraps);
+        return new OrganisationScrap(nomOrganisation, engagementScraps, idOrganisation);
     }
 
     private String getIdOrganisation(Document doc) {
-        return doc.getElementById("idIframeEngagement").
-                attr("src").
-                replaceAll("engagements/|.html", "");
+        return doc.getElementById("idIframeEngagement")
+                .attr("src")
+                .replaceAll("engagements/|.html", "");
     }
 
     private String getNomOrganisation(String[] infosOrganisation) {

@@ -1,6 +1,5 @@
 package fr.athompson.database.entities;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +11,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "competitions")
-public class Competition {
+public class CompetitionDB {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "competitions_id_gen")
     @SequenceGenerator(name = "competitions_id_gen", sequenceName = "competitions_id_seq", allocationSize = 1)
@@ -22,8 +21,8 @@ public class Competition {
     @Column(name = "niveau", nullable = false)
     private String niveau;
 
-    @Column(name = "division")
-    private String division;
+    @Column(name = "division", nullable = false)
+    private Integer division;
 
     @Column(name = "categorie", nullable = false)
     private String categorie;
@@ -40,10 +39,20 @@ public class Competition {
     @Column(name = "annee", nullable = false)
     private Integer annee;
 
-    @OneToMany(mappedBy = "competition")
-    private Set<Classement> classements = new LinkedHashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "comite_id", nullable = false)
+    private ComiteDB comite;
+
+    @Column(name = "organisation_id_html", nullable = false)
+    private String organisationIdHtml;
+
+    @Column(name = "division_id_html", nullable = false)
+    private String divisionIdHtml;
+
+    @Column(name = "poule_id_html", nullable = false)
+    private String pouleIdHtml;
 
     @OneToMany(mappedBy = "competition")
-    private Set<Journee> journees = new LinkedHashSet<>();
+    private Set<ClassementDB> classements = new LinkedHashSet<>();
 
 }

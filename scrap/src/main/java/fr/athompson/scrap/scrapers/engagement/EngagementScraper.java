@@ -4,7 +4,6 @@ import fr.athompson.scrap.entities.CompetitionScrap;
 import fr.athompson.scrap.entities.engagement.EngagementScrap;
 import fr.athompson.scrap.entities.engagement.factory.EngagementScrapFactory;
 import fr.athompson.scrap.enums.EngagementType;
-import fr.athompson.scrap.enums.SexeCompetitionType;
 import fr.athompson.scrap.scrapers.Scraper;
 import fr.athompson.scrap.scrapers.competition.CompetitionScraper;
 import fr.athompson.scrap.scrapers.utils.ScrapUtils;
@@ -17,8 +16,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Log4j2
 @Component
@@ -37,53 +37,59 @@ public class EngagementScraper extends Scraper<List<EngagementScrap>> {
         for (Element htmlEngagement : htmlEngagements) {
             log.info(htmlEngagement.getAllElements().size());
             if (htmlEngagement.getAllElements().size() > 1) {
-                var engagement = creerEngagement(htmlEngagement);
-                engagements.add(engagement);
+                var engagementType = getEngagementType(htmlEngagement);
+                if (engagementType == EngagementType.CHAMPIONNAT) {
+                    var engagement = creerEngagements(htmlEngagement,engagementType);
+                    engagements.addAll(engagement);
+                }
             }
         }
-
         return engagements;
     }
 
-    private EngagementScrap creerEngagement(Element htmlEngagement) throws Exception {
-
+    private static EngagementType getEngagementType(Element htmlEngagement) {
         var htmlTypeEngagement = ScrapUtils.getFirstElementText(htmlEngagement.getElementsByClass("titre-bloc").first(), "td");
-
-        //Parcourir l'engagement et créer les compétitions adéquates
-        var equipesEngages = htmlEngagement.getElementsByTag("tr").not(".titre-bloc");
-
-        var competitionsEngagees = new HashMap<SexeCompetitionType, List<CompetitionScrap>>();
-
-        SexeCompetitionType sexeCompetition = null;
-        var competitions = new ArrayList<CompetitionScrap>();
-        for (Element equipeEngage : equipesEngages) {
-
-            String firstTableCellText = ScrapUtils.getFirstElementText(equipeEngage, "td");
-            if (equipeEngage.hasClass("tit-3")) {
-                if (null != sexeCompetition) {
-                    competitionsEngagees.put(sexeCompetition, competitions);
-                    competitions = new ArrayList<>();
-                }
-                sexeCompetition = SexeCompetitionType.findByLibelleHtml(firstTableCellText);
-                log.info(sexeCompetition);
-            } else if (equipeEngage.hasClass("altern-2") || equipeEngage.hasClass("no-altern-2")) {
-                competitions.add(creerCompetition(equipeEngage, htmlTypeEngagement));
-            }
-        }
-        competitionsEngagees.put(sexeCompetition, competitions);
-        return EngagementScrapFactory.createEngagement(EngagementType.findByLibelleHtml(htmlTypeEngagement), competitionsEngagees);
+        var engagementType = EngagementType.findByLibelleHtml(htmlTypeEngagement);
+        return engagementType;
     }
 
-    private CompetitionScrap creerCompetition(Element equipeEngage, String htmlTypeEngagement) throws Exception {
+    private List<EngagementScrap> creerEngagements(Element htmlEngagement,EngagementType engagementType) throws Exception {
+        //Parcourir l'engagement et créer les compétitions adéquates
+        var equipesEngages = htmlEngagement.getElementsByTag("tr").not(".titre-bloc");
+        var engagements = new ArrayList<EngagementScrap>();
+        for (Element equipeEngage : equipesEngages) {
+            if (equipeEngage.hasClass("altern-2") || equipeEngage.hasClass("no-altern-2")) {
+                String poule = getPoule(equipeEngage);
+                var competition = creerCompetition(equipeEngage);
+                //Paroucrir la compétition regarder les équipes
+                //Si on tombe sur l'équipe qui possède notre identifiant team
+                //Alors on save cette team dans l'engagement
+                engagements.add(
+                        EngagementScrapFactory.createEngagement(
+                                engagementType,
+                                competition,
+                                poule
+                        )
+                );
+            }
+        }
+        return engagements;
+    }
+
+    private static String getPoule(Element equipeEngage) {
+        String libellePourPoule = equipeEngage.select("td.gauche").first().text();
+
+        String poule="";
+        Pattern POULE_PATTERN = Pattern.compile("\\(.*\\)");
+        Matcher pouleMatcher = POULE_PATTERN.matcher(libellePourPoule);
+        if(pouleMatcher.find())
+            poule = pouleMatcher.group().substring(1,pouleMatcher.group().length()-1);
+        return poule;
+    }
+
+    private CompetitionScrap creerCompetition(Element equipeEngage) throws Exception {
         String lienCompetition = equipeEngage.select("a").attr("href");
         var params = new Parametres(lienCompetition);
-        //TODO on focus sur le championnat pour le moment
-        CompetitionScrap competitionScrap;
-        if (EngagementType.findByLibelleHtml(htmlTypeEngagement) == EngagementType.CHAMPIONNAT) {
-            competitionScrap = competitionScraper.getData(params.getIdOrganisation(), params.getIdDivision(), params.getIdPoule());
-        } else
-            return null;
-        //TODO Ajouter niveau,divisoin,categorie,type,sexe
-        return competitionScrap;
+        return competitionScraper.getData(params.getIdOrganisation(), params.getIdDivision(), params.getIdPoule());
     }
 }

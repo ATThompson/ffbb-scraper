@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component
 @Slf4j
@@ -22,9 +24,9 @@ public class ClassementScraper extends Scraper<ClassementScrap> {
         super(uri, driver);
     }
 
-    public ClassementScrap scrap(Document doc) {
+    public ClassementScrap scrap(Document doc) throws Exception {
         var rowsClassement = new ArrayList<RowClassementScrap>();
-        var tableRowClassement = doc.select("table.list tr[class*=altern-2]");
+        var tableRowClassement = doc.select("table.liste tr[class*=altern-2]");
         for (Element rowElement : tableRowClassement) {
             Elements dataRow = rowElement.getAllElements();
             var oneRowClassement = getOneRowClassement(dataRow);
@@ -33,20 +35,36 @@ public class ClassementScraper extends Scraper<ClassementScrap> {
         return new ClassementScrap(rowsClassement);
     }
 
-    private RowClassementScrap getOneRowClassement(Elements dataRow) {
+    private RowClassementScrap getOneRowClassement(Elements dataRow) throws Exception {
+        int addBonus = 0;
+        if(dataRow.size() == 20){
+            addBonus=1;
+        }
         return RowClassementScrap.builder()
                 .position(Integer.valueOf(dataRow.get(1).text()))
-                .equipe(new EquipeScrap(dataRow.get(3).text()))
+                .equipe(new EquipeScrap(dataRow.get(3).text(), getIdOrganisation(dataRow.get(3))))
                 .points(Integer.valueOf(dataRow.get(4).text()))
                 .matchJoues(Integer.valueOf(dataRow.get(5).text()))
                 .matchGagnes(Integer.valueOf(dataRow.get(6).text()))
                 .matchPerdus(Integer.valueOf(dataRow.get(7).text()))
                 .matchNuls(Integer.valueOf(dataRow.get(8).text()))
-                .matchPenalite(Integer.valueOf(dataRow.get(10).text()))
-                .matchForfait(Integer.valueOf(dataRow.get(11).text()))
-                .pointsMarques(Integer.valueOf(dataRow.get(16).text()))
-                .pointsEncaisses(Integer.valueOf(dataRow.get(17).text()))
-                .difference(Integer.valueOf(dataRow.get(18).text()))
+                .matchPenalites(Integer.valueOf(dataRow.get(10+addBonus).text()))
+                .matchForfaits(Integer.valueOf(dataRow.get(11+addBonus).text()))
+                .pointsMarques(Integer.valueOf(dataRow.get(16+addBonus).text()))
+                .pointsEncaisses(Integer.valueOf(dataRow.get(17+addBonus).text()))
+                .pointsDifference(Integer.valueOf(dataRow.get(18+addBonus).text()))
                 .build();
     }
+
+    private String getIdOrganisation(Element node) throws Exception {
+        String urlEquipe = node.attribute("href").getValue();
+        Pattern pattern = Pattern.compile("\\.\\./equipe/(.*)\\.html(.*)");
+        Matcher matcher = pattern.matcher(urlEquipe);
+        if (matcher.matches()) {
+            return matcher.group(1);
+        } else {
+            throw new Exception(urlEquipe);
+        }
+    }
+
 }

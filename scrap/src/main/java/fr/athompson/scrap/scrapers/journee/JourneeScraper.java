@@ -16,6 +16,8 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component
 @Slf4j
@@ -27,7 +29,7 @@ public class JourneeScraper extends Scraper<JourneeScrap> {
 
     //TODO: Créer un rencontre scraper et enlever la partie rencontre
 
-    protected JourneeScrap scrap(Document doc) {
+    protected JourneeScrap scrap(Document doc) throws Exception {
         var rencontres = new ArrayList<RencontreScrap>();
 
         var tableRowRencontre = doc.select("tr[class*=altern-2]").not("[style='display:none']");
@@ -40,7 +42,8 @@ public class JourneeScraper extends Scraper<JourneeScrap> {
     }
 
 
-    private RencontreScrap getRencontre(Elements dataRencontre) {
+    private RencontreScrap getRencontre(Elements dataRencontre) throws Exception {
+        //Rédupérer l'identifiant de l'organisation qui se trouve dans les liens
         Integer[] scores = getScoreEquipes(dataRencontre.get(8).text());
         return RencontreScrap.builder()
                 .numeroRencontre(
@@ -50,21 +53,34 @@ public class JourneeScraper extends Scraper<JourneeScrap> {
                                 dataRencontre.get(2).text(),
                                 dataRencontre.get(3).text(),
                                 DateTimeFormatter.JJ_MM_AAAA_SLASH_HH_MM))
-                .equipeDomicile(new EquipeScrap(dataRencontre.get(5).text()))
-                .equipeVisiteur(new EquipeScrap(dataRencontre.get(7).text()))
+                .equipeDomicile(new EquipeScrap(dataRencontre.get(5).text(), getIdOrganisation(dataRencontre.get(5))))
+                .equipeVisiteur(new EquipeScrap(dataRencontre.get(7).text(), getIdOrganisation(dataRencontre.get(7))))
                 .scoreDomicile(scores[0])
                 .scoreVisiteur(scores[1])
                 .build();
+
+
     }
 
     private Integer[] getScoreEquipes(String score) {
         var scores = score.split("-");
         if (2 > scores.length)
-            return new Integer[2];
+            return new Integer[] {0,0};
         return Arrays.stream(scores).map(String::trim).map(this::ifNullReturn0ElseScore).toArray(Integer[]::new);
     }
 
     private Integer ifNullReturn0ElseScore(String score) {
         return !StringUtils.hasLength(score) ? 0 : Integer.parseInt(score);
+    }
+
+    private String getIdOrganisation(Element node) throws Exception {
+        String urlEquipe = node.attribute("href").getValue();
+        Pattern pattern = Pattern.compile("\\.\\./equipe/(.*)\\.html(.*)");
+        Matcher matcher = pattern.matcher(urlEquipe);
+        if (matcher.matches()) {
+            return matcher.group(1);
+        } else {
+            throw new Exception(urlEquipe);
+        }
     }
 }

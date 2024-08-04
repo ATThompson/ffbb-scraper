@@ -6,9 +6,9 @@ import java.util.Arrays;
 
 @Getter
 public enum SexeCompetitionType {
-    FEMININ("Equipes féminines"),
-    MASCULIN("Equipes masculines"),
-    MIXTE("Equipes mixtes");
+    FEMININ("feminin"),
+    MASCULIN("mascul"),
+    MIXTE("mixte");
 
     final String libelleHtml;
 
@@ -19,7 +19,7 @@ public enum SexeCompetitionType {
 
     public static SexeCompetitionType findByLibelleHtml(final String libelleHtml) {
         return Arrays.stream(values())
-                .filter(value -> value.getLibelleHtml().equals(libelleHtml))
+                .filter(value -> libelleHtml.toLowerCase().contains(value.getLibelleHtml()))
                 .findFirst()
                 .orElse(null);
     }

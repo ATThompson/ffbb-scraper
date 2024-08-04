@@ -1,13 +1,14 @@
 package fr.athompson.scrap.entities.engagement;
 
-import fr.athompson.scrap.enums.SexeCompetitionType;
 import fr.athompson.scrap.entities.CompetitionScrap;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.List;
-import java.util.Map;
-
+@Getter
+@Setter
 public abstract class EngagementScrap {
-    protected Map<SexeCompetitionType, List<CompetitionScrap>> competitionsEngagees;
+    private CompetitionScrap competitionEngagee;
+    private String poule;
 
     //TODO: Voir pour ajouter le niveau depart/regional plus la division 1 2 3
     // et définir ca comme une liste de toutes ces infos
@@ -16,8 +17,9 @@ public abstract class EngagementScrap {
     public EngagementScrap() {
     }
 
-    public EngagementScrap(Map<SexeCompetitionType, List<CompetitionScrap>> competitionsEngagees) {
-        this.competitionsEngagees = competitionsEngagees;
+    public EngagementScrap(CompetitionScrap competitionEngagee, String poule) {
+        this.competitionEngagee = competitionEngagee;
+        this.poule = poule;
     }
 
 }

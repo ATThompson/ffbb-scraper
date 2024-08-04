@@ -16,11 +16,11 @@ public class EngagementScrapFactory {
     private EngagementScrapFactory() {
     }
 
-    public static EngagementScrap createEngagement(EngagementType type, Map<SexeCompetitionType, List<CompetitionScrap>> competitionsEngagees) {
+    public static EngagementScrap createEngagement(EngagementType type, CompetitionScrap competitionsEngagee, String poule) {
         return switch (type) {
-            case CHAMPIONNAT -> new EngagementScrapChampionnat(competitionsEngagees);
-            case COUPE -> new EngagementScrapCoupe(competitionsEngagees);
-            case PLATEAU -> new EngagementScrapPlateau(competitionsEngagees);
+            case CHAMPIONNAT -> new EngagementScrapChampionnat(competitionsEngagee,poule);
+            case COUPE -> new EngagementScrapCoupe(competitionsEngagee,poule);
+            case PLATEAU -> new EngagementScrapPlateau(competitionsEngagee,poule);
             default -> throw new RuntimeException("Erreur dans les types d'engagement");
         };
     }

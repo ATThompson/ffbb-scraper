@@ -8,19 +8,18 @@ import fr.athompson.scrap.entities.engagement.EngagementScrap;
 import fr.athompson.scrap.entities.engagement.EngagementScrapChampionnat;
 import fr.athompson.scrap.entities.engagement.EngagementScrapCoupe;
 import fr.athompson.scrap.entities.engagement.EngagementScrapPlateau;
-import org.mapstruct.Mapper;
-import org.mapstruct.SubclassExhaustiveStrategy;
+import org.mapstruct.*;
 
-@Mapper(componentModel = "spring", subclassExhaustiveStrategy = SubclassExhaustiveStrategy.RUNTIME_EXCEPTION)
 public interface EngagementMapper {
 
-    EngagementChampionnat toDomain(EngagementScrapChampionnat engagementScrap);
+
+   EngagementChampionnat toDomain(EngagementScrapChampionnat engagementScrap);
 
     EngagementCoupe toDomain(EngagementScrapCoupe engagementScrap);
 
     EngagementPlateau toDomain(EngagementScrapPlateau engagementScrap);
 
-    default Engagement mapToVehicleDTO(EngagementScrap engagementScrap) {
+    default Engagement mapToEngagement(EngagementScrap engagementScrap) {
         if (engagementScrap instanceof EngagementScrapChampionnat) {
             return toDomain((EngagementScrapChampionnat) engagementScrap);
         } else if (engagementScrap instanceof EngagementScrapCoupe) {
@@ -31,4 +30,5 @@ public interface EngagementMapper {
             return null;
         }
     }
+
 }

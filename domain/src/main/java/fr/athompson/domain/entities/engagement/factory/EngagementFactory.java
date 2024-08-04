@@ -16,11 +16,11 @@ public class EngagementFactory {
     private EngagementFactory() {
     }
 
-    public static Engagement createEngagement(EngagementType type, Map<SexeCompetitionType, List<Competition>> competitionsEngagees) {
+    public static Engagement createEngagement(EngagementType type, Competition competitionsEngagee, String poule) {
         return switch (type) {
-            case CHAMPIONNAT -> new EngagementChampionnat(competitionsEngagees);
-            case COUPE -> new EngagementCoupe(competitionsEngagees);
-            case PLATEAU -> new EngagementPlateau(competitionsEngagees);
+            case CHAMPIONNAT -> new EngagementChampionnat(competitionsEngagee, poule);
+            case COUPE -> new EngagementCoupe(competitionsEngagee, poule);
+            case PLATEAU -> new EngagementPlateau(competitionsEngagee, poule);
             default -> throw new RuntimeException("Erreur dans les types d'engagement");
         };
     }
