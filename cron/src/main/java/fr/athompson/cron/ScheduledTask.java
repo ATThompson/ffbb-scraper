@@ -3,6 +3,7 @@ package fr.athompson.cron;
 import fr.athompson.cron.spi.SPIGetAllCompetitions;
 import fr.athompson.cron.spi.SPIGetCompetition;
 import fr.athompson.cron.spi.SPISaveCompetition;
+import fr.athompson.domain.entities.Competition;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -27,12 +28,20 @@ public class ScheduledTask {
     public void test() {
         var competitions = getAllCompetitions.execute();
         log.info("Nombre de competitions " + competitions.size());
-        var competition = getCompetition.execute(competitions.getFirst().idOrganisation(),
-                competitions.getFirst().idDivision(),
-                competitions.getFirst().idPoule()
-                );
-        log.info("Identification organisation " + competitions.get(0).idOrganisation());
-        saveCompetition.execute(competition);
+        for(Competition competition : competitions) {
+            String idOrganisation = competition.idOrganisation();
+            String idDivision = competition.idDivision();
+            String idPoule = competition.idPoule();
+            log.info("CRON : idOrganisation " + idOrganisation + " idDivision " + idDivision + " idPoule " + idPoule);
+            log.info("Début du scraping pour la competition ");
+            getCompetition.execute(idOrganisation,idDivision,idPoule);
+            log.info("Fin scraping");
+            log.info("Début sauvegarde");
+            saveCompetition.execute(competition);
+            log.info("Fin sauvegarde");
+        }
+
+
 
     }
 }

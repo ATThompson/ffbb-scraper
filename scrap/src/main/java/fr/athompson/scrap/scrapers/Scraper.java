@@ -10,6 +10,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -24,7 +25,17 @@ public abstract class Scraper<T> {
     private String[] paramsMethod;
 
     private Document getDocument(String uri) {
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        int nbSecondesMax = 3;
+        int nbSecondesMin = 0;
+        Random random = new Random();
+        int nbSecondes = random.ints(nbSecondesMin, nbSecondesMax)
+                .findFirst()
+                .getAsInt();
+        try {
+            Thread.sleep(nbSecondes*1000);
+        } catch (InterruptedException e) {
+            log.error(e.getMessage());
+        }
         CompteurAppelSingleton.getInstance().ajoutUnNombreAppel();
         driver.get(uri);
         return Jsoup.parse(driver.getPageSource());

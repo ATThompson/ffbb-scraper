@@ -40,39 +40,41 @@ public class SaveCompetition implements SPISaveCompetition {
     RencontreMapperDB rencontreMapperDB;
 
     @Transactional
-    public void execute(Competition competition){
+    public void execute(Competition competition) {
         Optional<CompetitionDB> optionalCompetitionPresenteEnBase = competitionRepository.findByOrganisationIdHtmlAndDivisionIdHtmlAndPouleIdHtml(
                 competition.idOrganisation(),
                 competition.idDivision(),
                 competition.idPoule()
         );
-        var competitionDB = optionalCompetitionPresenteEnBase.get();
-        var classement = competitionDB.getClassements();
-        for(RowClassement rowClassement : competition.classement().rowsClassement()){
-           ClassementDB ligneClassementDejaPresenteEnBase = classement.stream()
-                   .filter(equipeDB ->
-                           equipeDB.getEquipe().getNom().equals(rowClassement.equipe().nom())
-                                   && equipeDB.getEquipe().getOrganisationIdHtml().equals(rowClassement.equipe().idOrganisation())).findFirst().get();
+        if (optionalCompetitionPresenteEnBase.isPresent()) {
+            var competitionDB = optionalCompetitionPresenteEnBase.get();
+            var classement = competitionDB.getClassements();
+            for (RowClassement rowClassement : competition.classement().rowsClassement()) {
+                ClassementDB ligneClassementDejaPresenteEnBase = classement.stream()
+                        .filter(equipeDB ->
+                                equipeDB.getEquipe().getNom().equals(rowClassement.equipe().nom())
+                                        && equipeDB.getEquipe().getOrganisationIdHtml().equals(rowClassement.equipe().idOrganisation())).findFirst().get();
 
-           var classementDBToSave = classementMapperDB.toDatabase(rowClassement);
+                var classementDBToSave = classementMapperDB.toDatabase(rowClassement);
 
-            classementDBToSave.setEquipe(ligneClassementDejaPresenteEnBase.getEquipe());
-            classementDBToSave.setCompetition(ligneClassementDejaPresenteEnBase.getCompetition());
-            classementDBToSave.setId(ligneClassementDejaPresenteEnBase.getId());
+                classementDBToSave.setEquipe(ligneClassementDejaPresenteEnBase.getEquipe());
+                classementDBToSave.setCompetition(ligneClassementDejaPresenteEnBase.getCompetition());
+                classementDBToSave.setId(ligneClassementDejaPresenteEnBase.getId());
 
-            classementRepository.save(classementDBToSave);
-        }
+                classementRepository.save(classementDBToSave);
+            }
 
-        for(Journee journee : competition.journees()){
-            List<RencontreDB> rencontresDB = rencontreRepository.findByJournee_journeeIdHtmlAndJournee_Competition_id(journee.idJournee(),competitionDB.getId());
-            for(RencontreDB rencontreDB : rencontresDB){
-                Rencontre rencontreDomain = journee.recontres().stream().filter(j -> j.numeroRencontre().equals(rencontreDB.getRencontreIdHtml())).findFirst().orElse(null);
-                var rencontreDBToSave = rencontreMapperDB.toDatabase(rencontreDomain);
-                rencontreDBToSave.setJournee(rencontreDB.getJournee());
-                rencontreDBToSave.setId(rencontreDB.getId());
-                rencontreDBToSave.setEquipeVisiteur(rencontreDB.getEquipeVisiteur());
-                rencontreDBToSave.setEquipeDomicile(rencontreDB.getEquipeDomicile());
-                rencontreRepository.save(rencontreDBToSave);
+            for (Journee journee : competition.journees()) {
+                List<RencontreDB> rencontresDB = rencontreRepository.findByJournee_journeeIdHtmlAndJournee_Competition_id(journee.idJournee(), competitionDB.getId());
+                for (RencontreDB rencontreDB : rencontresDB) {
+                    Rencontre rencontreDomain = journee.recontres().stream().filter(j -> j.numeroRencontre().equals(rencontreDB.getRencontreIdHtml())).findFirst().orElse(null);
+                    var rencontreDBToSave = rencontreMapperDB.toDatabase(rencontreDomain);
+                    rencontreDBToSave.setJournee(rencontreDB.getJournee());
+                    rencontreDBToSave.setId(rencontreDB.getId());
+                    rencontreDBToSave.setEquipeVisiteur(rencontreDB.getEquipeVisiteur());
+                    rencontreDBToSave.setEquipeDomicile(rencontreDB.getEquipeDomicile());
+                    rencontreRepository.save(rencontreDBToSave);
+                }
             }
         }
     }

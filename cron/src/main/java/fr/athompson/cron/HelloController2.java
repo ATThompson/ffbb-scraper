@@ -21,18 +21,10 @@ public class HelloController2 {
     final SPISaveOrganisation saveOrganisation;
     //30ab pro fille et espoirs
     @GetMapping("/tata/{idOrganisation}")
-    public String qsdsq(@PathVariable String idOrganisation) throws JsonProcessingException {
-        System.out.println(idOrganisation);
+    public String qsdsq(@PathVariable String idOrganisation) {
         var orga = getOrganisation.getOrganisation(idOrganisation);
         saveOrganisation.saveOrganisation(orga);
-        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        String json = ow.writeValueAsString(orga);
-        return json;
+        return "OK";
     }
-    @GetMapping("/popo")
-    public String qsdsq() throws JsonProcessingException {
-        return "sss";
-    }
-
 
 }

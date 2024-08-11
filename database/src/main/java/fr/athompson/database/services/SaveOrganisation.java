@@ -67,24 +67,10 @@ public class SaveOrganisation implements SPISaveOrganisation {
     public void saveOrganisation(Organisation organisation) {
         var organisationDB = organisationRepository.findByNom(organisation.nom()).orElse(null);
         if(null == organisationDB) {
-            //On enregistre tout
             organisationDB = organisationMapperDB.toDatabase(organisation);
             organisationRepository.save(organisationDB);
         }
-        //Sinon faut update
         for(Engagement engagement : organisation.engagements()){
-            //On cherche si la compétition existe ?
-            //Si oui on continue
-                //Est-ce qu'il existe dans la competition une équipe ayant l'identifiant de l'organisation?
-                //Si oui
-                    //Est-ce qu'il existe un engagement avec l'identifiant de la compétition et l'identifiant de l'équipe trouvée et la poule.
-                    //Si oui, ne rien faire
-                    //Si non, créer l'engagement et mettre l'identifiant de la compétition et identifiant de l'équipe dans l'engagement
-                //Cas impossible
-            //Si non => Créer la compétition, le classement, les rencontres , les équipes
-                // Quand on tombe sur l'équipe ayant le même nom de l'organisation on l'insert dans l'engagement fraichement crée
-
-
 
             var competition = engagement.getCompetitionEngagee();
             var comiteDB = comiteRepository.findByComiteIdHtml(competition.comite().idComite()).orElse(null);
@@ -101,16 +87,7 @@ public class SaveOrganisation implements SPISaveOrganisation {
             }else
                 type = "COUPE";
             var competitionDB = competitionMapperDB.toDatabase(competition);
-           /**
-            *  var competitionDBFound = competitionRepository.findByNiveauAndDivisionAndCategorieAndTypeAndSexeAndNombrePoulesAndAnneeAndComite_Id(
-                    competitionDB.getNiveau(),
-                    competitionDB.getDivision(),
-                    competitionDB.getCategorie(),
-                    type,competitionDB.getSexe(),
-                    competitionDB.getNombrePoules(),
-                    2025,
-                    comiteDB.getId()).orElse(null);
-            */
+
             var competitionDBFound = competitionRepository.findByOrganisationIdHtmlAndDivisionIdHtmlAndPouleIdHtml(
                     competitionDB.getOrganisationIdHtml(),
                     competitionDB.getDivisionIdHtml(),
@@ -186,7 +163,6 @@ public class SaveOrganisation implements SPISaveOrganisation {
             var engagementDB = engagementMapperDB.toDatabase(engagement);
             engagementDB.setOrganisation(organisationDB);
             engagementDB.setCompetition(competitionDB);
-            //Si plusieurs équipes récupérer leurs id db et faire un findBy et checker quelles ne sont pas reliés à un autre engagement sinon prendre l'autre
             if(equipeEngagement.isEmpty()){
                 //TODO: Pas de nouvelles équipes à engager
                 log.info("PAS DE NOUVEAUX ENGAGEMENTS pour l'organisation "+organisation.nom());
