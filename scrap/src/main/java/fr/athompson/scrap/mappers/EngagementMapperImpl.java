@@ -20,7 +20,6 @@ public class EngagementMapperImpl implements EngagementMapper {
         if(null == engagementScrap) return null;
         var championnat = new EngagementChampionnat();
         championnat.setCompetitionEngagee(competitionMapper.toDomain(engagementScrap.getCompetitionEngagee()));
-        championnat.setPoule(engagementScrap.getPoule());
         return championnat;
     }
 
@@ -29,7 +28,6 @@ public class EngagementMapperImpl implements EngagementMapper {
         if(null == engagementScrap) return null;
         var coupe = new EngagementCoupe();
         coupe.setCompetitionEngagee(competitionMapper.toDomain(engagementScrap.getCompetitionEngagee()));
-        coupe.setPoule(engagementScrap.getPoule());
         return coupe;
     }
 
@@ -38,7 +36,6 @@ public class EngagementMapperImpl implements EngagementMapper {
         if(null == engagementScrap) return null;
         var plateau = new EngagementPlateau();
         plateau.setCompetitionEngagee(competitionMapper.toDomain(engagementScrap.getCompetitionEngagee()));
-        plateau.setPoule(engagementScrap.getPoule());
         return plateau;
     }
 }

@@ -14,5 +14,6 @@ public interface RencontreMapperDB {
     @Mapping(target = "equipeDomicile", ignore = true)
     @Mapping(target = "equipeVisiteur", ignore = true)
     @Mapping(target = "journee", ignore = true)
+    @Mapping(target = "rencontreIdHtml",source = "numeroRencontre")
     RencontreDB toDatabase(Rencontre rencontre);
 }

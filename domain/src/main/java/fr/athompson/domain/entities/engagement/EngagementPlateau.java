@@ -9,8 +9,8 @@ import lombok.experimental.SuperBuilder;
 @Setter
 public class EngagementPlateau extends Engagement {
 
-    public EngagementPlateau(Competition competitionEngagee, String poule) {
-        super(competitionEngagee, poule);
+    public EngagementPlateau(Competition competitionEngagee) {
+        super(competitionEngagee);
     }
 
     public EngagementPlateau() {

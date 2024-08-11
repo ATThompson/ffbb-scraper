@@ -11,7 +11,8 @@ import java.util.List;
 
 
 @Builder
-public record CompetitionScrap(ClassementScrap classement,
+public record CompetitionScrap(String nom,
+                               ClassementScrap classement,
                                List<JourneeScrap> journees,
                                List<EquipeScrap> equipes,
                                SexeCompetitionType sexe,
@@ -19,6 +20,8 @@ public record CompetitionScrap(ClassementScrap classement,
                                DivisionType division,
                                CategorieType categorie,
                                Integer nombrePoules,
+                               String poule,
+                               Boolean isEspoir,
                                ComiteScrap comite,
                                String idOrganisation,
                                String idDivision,

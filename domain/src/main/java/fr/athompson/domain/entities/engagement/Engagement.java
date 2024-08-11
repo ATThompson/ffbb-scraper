@@ -10,11 +10,9 @@ import lombok.experimental.SuperBuilder;
 @Setter
 public abstract class Engagement {
     private Competition competitionEngagee;
-    private String poule;
 
-    public Engagement(Competition competitionEngagee, String poule) {
+    public Engagement(Competition competitionEngagee) {
         this.competitionEngagee = competitionEngagee;
-        this.poule = poule;
     }
 
     public Engagement() {

@@ -4,10 +4,7 @@ import fr.athompson.scrap.entities.ComiteScrap;
 import fr.athompson.scrap.entities.CompetitionScrap;
 import fr.athompson.scrap.entities.JourneeScrap;
 import fr.athompson.scrap.entities.classement.ClassementScrap;
-import fr.athompson.scrap.enums.CategorieType;
-import fr.athompson.scrap.enums.DivisionType;
-import fr.athompson.scrap.enums.NiveauCompetitionType;
-import fr.athompson.scrap.enums.SexeCompetitionType;
+import fr.athompson.scrap.enums.*;
 import fr.athompson.scrap.scrapers.Scraper;
 import fr.athompson.scrap.scrapers.classement.ClassementScraper;
 import fr.athompson.scrap.scrapers.journee.JourneeScraper;
@@ -23,6 +20,7 @@ import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 
 @Component
 @Slf4j
@@ -47,19 +45,45 @@ public class CompetitionScraper extends Scraper<CompetitionScrap> {
         Integer nbPages = pageScaper.getData(identifiantClassement);
         log.info("Nombre de journees : {} ", nbPages);
         for (int page = 1; page <= nbPages; page++) {
-            journees.add(journeeScraper.getData(identifiantClassement + Integer.toHexString(page)));
+            JourneeScrap journeeScrap = journeeScraper.getData(identifiantClassement + Integer.toHexString(page));
+            journeeScrap.setIdJournee(page);
+            journees.add(journeeScrap);
         }
         ClassementScrap classementScrap = classementScraper.getData(identifiantClassement);
-        var idTdDivisionNormlized = getIdTdDivisionNormalizedLowerCase(doc);
+        String nomCompetition = getNomCompetition(doc);
+        var idTdDivisionNormlized = getIdTdDivisionNormalizedLowerCase(nomCompetition);
+        return new CompetitionScrap(nomCompetition,
+                classementScrap,
+                journees,
+                null,
+                getSexe(idTdDivisionNormlized),
+                getNiveau(idTdDivisionNormlized),
+                getDivision(idTdDivisionNormlized),
+                getCategorie(idTdDivisionNormlized),
+                getNombrePoules(doc),
+                getPoule(),
+                getIsEspoir(idTdDivisionNormlized),
+                getComite(doc),
+                getIdOrganisation(),
+                getIdDivision(),
+                getIdPoule());
+    }
 
-        SexeCompetitionType sexe = getSexe(idTdDivisionNormlized);
-        NiveauCompetitionType niveau = getNiveau(idTdDivisionNormlized);
-        DivisionType division = getDivision(idTdDivisionNormlized);
-        CategorieType categorie = getCategorie(idTdDivisionNormlized);
-        Integer nombrePoules= getNombrePoules(doc);
-        ComiteScrap comite = getComite(doc);
-        String[] paramsMethod = getParamsMethod();
-        return new CompetitionScrap(classementScrap, journees, null,sexe,niveau,division,categorie,nombrePoules,comite,paramsMethod[0],paramsMethod[1],paramsMethod[2]);
+    private String getIdPoule(){
+        return getParamsMethod()[2];
+    }
+    private String getIdDivision(){
+        return getParamsMethod()[1];
+    }
+    private  String getIdOrganisation() {
+        return getParamsMethod()[0];
+    }
+    private String getPoule() {
+        return getParamsMethod()[3];
+    }
+
+    private Boolean getIsEspoir(String idTdDivisionNormlized) {
+        return idTdDivisionNormlized.contains("espoir");
     }
 
     private ComiteScrap getComite(Document doc) throws Exception {
@@ -77,11 +101,26 @@ public class CompetitionScraper extends Scraper<CompetitionScrap> {
         return new ComiteScrap(matcher.group(1),a.text());
     }
 
-    private static String getIdTdDivisionNormalizedLowerCase(Document doc) {
-        String idTdDivision = doc.getElementById("idTdDivision").text().trim();
+    private static String getIdTdDivisionNormalizedLowerCase(String idTdDivision) {
         var idTdDivisionNormlized = Normalizer.normalize(idTdDivision, Normalizer.Form.NFD);
         idTdDivisionNormlized = idTdDivisionNormlized.replaceAll("[\\p{InCombiningDiacriticalMarks}]","").toLowerCase();
         return idTdDivisionNormlized;
+    }
+
+    @Override
+    public String[] getParamsMethod() {
+        return super.getParamsMethod();
+    }
+
+    private String getNomCompetition(Document doc) {
+        String idTdDivision;
+        try{
+            idTdDivision = doc.getElementById("idTdDivision").select("option[value="+getParamsMethod()[1]+"]").first().text();
+        } catch (RuntimeException e) {
+            idTdDivision = doc.getElementById("idTdDivision").text().trim();
+            log.error(e.getMessage());
+        }
+        return idTdDivision;
     }
 
     private Integer getNombrePoules(Document doc) {
@@ -102,27 +141,50 @@ public class CompetitionScraper extends Scraper<CompetitionScrap> {
     }
 
     private DivisionType getDivision(String idTdDivisionNormlized) {
-        var division = DivisionType.findBypossibiliteLibelle(idTdDivisionNormlized);
-        if(null != division)
-            return division;
-        else
-            throw new RuntimeException("Division introuvable pour : "+idTdDivisionNormlized);
+        ProLigueType proLigueType = ProLigueType.findByLibelleHtml(idTdDivisionNormlized);
+        if(null == proLigueType) {
+            var division = DivisionType.findBypossibiliteLibelle(idTdDivisionNormlized);
+            if (null != division)
+                return division;
+            else {
+                log.error("Division introuvable pour : " + idTdDivisionNormlized);
+                return DivisionType.DIVISION_1;
+            }
+        }else{
+            if(proLigueType.in(ProLigueType.PRO_A,ProLigueType.ESPOIRS_PRO_A,ProLigueType.LF1))
+                return DivisionType.DIVISION_1;
+            else
+                return DivisionType.DIVISION_2;
+        }
     }
 
     private NiveauCompetitionType getNiveau(String idTdDivisionNormlized) {
-        NiveauCompetitionType niveau = NiveauCompetitionType.findBypossibiliteLibelle(idTdDivisionNormlized);
-        if(null == niveau)
-            throw new RuntimeException("Niveau introuvable pour : "+idTdDivisionNormlized);
-        else
-            return niveau;
+        ProLigueType proLigueType = ProLigueType.findByLibelleHtml(idTdDivisionNormlized);
+        if(null == proLigueType) {
+            NiveauCompetitionType niveau = NiveauCompetitionType.findBypossibiliteLibelle(idTdDivisionNormlized);
+            if (null == niveau)
+                throw new RuntimeException("Niveau introuvable pour : " + idTdDivisionNormlized);
+            else
+                return niveau;
+        }else {
+            return NiveauCompetitionType.PRO;
+        }
     }
 
     private SexeCompetitionType getSexe(String idTdDivisionNormlized) {
-        SexeCompetitionType sexe = SexeCompetitionType.findByLibelleHtml(idTdDivisionNormlized);
-        if(null == sexe)
-            throw new RuntimeException("Sexe introuvable pour : "+idTdDivisionNormlized);
-        else
-            return sexe;
+        ProLigueType proLigueType = ProLigueType.findByLibelleHtml(idTdDivisionNormlized);
+        if(null == proLigueType) {
+            SexeCompetitionType sexe = SexeCompetitionType.findByLibelleHtml(idTdDivisionNormlized);
+            if (null == sexe)
+                throw new RuntimeException("Sexe introuvable pour : " + idTdDivisionNormlized);
+            else
+                return sexe;
+        }else{
+            if(proLigueType.in(ProLigueType.LF1,ProLigueType.LF2))
+                return SexeCompetitionType.FEMININ;
+            else
+                return SexeCompetitionType.MASCULIN;
+        }
     }
 
 
@@ -135,4 +197,5 @@ public class CompetitionScraper extends Scraper<CompetitionScrap> {
         }
         return elt.attr("value").substring(9, 33);
     }
+
 }

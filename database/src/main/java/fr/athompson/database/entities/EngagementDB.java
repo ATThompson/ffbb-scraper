@@ -15,9 +15,6 @@ public class EngagementDB {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "poule")
-    private String poule;
-
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "equipe_id", nullable = false)
     private EquipeDB equipe;

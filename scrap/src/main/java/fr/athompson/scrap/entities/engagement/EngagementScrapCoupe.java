@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 @AllArgsConstructor
 public class EngagementScrapCoupe extends EngagementScrap {
-    public EngagementScrapCoupe(CompetitionScrap competitionEngagee, String poule) {
-        super(competitionEngagee, poule);
+    public EngagementScrapCoupe(CompetitionScrap competitionEngagee) {
+        super(competitionEngagee);
     }
 }

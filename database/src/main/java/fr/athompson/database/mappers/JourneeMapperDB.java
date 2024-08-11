@@ -9,5 +9,6 @@ import org.mapstruct.Mapping;
 public interface JourneeMapperDB {
 
     @Mapping(target = "competition", ignore = true)
+    @Mapping(target = "journeeIdHtml", source = "idJournee")
     JourneeDB toDatabase(Journee journee);
 }

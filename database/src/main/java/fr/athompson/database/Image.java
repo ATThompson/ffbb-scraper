@@ -89,7 +89,6 @@ public class Image {
 
         var engagement = new EngagementDB();
         engagement.setOrganisation(organisation);
-        engagement.setPoule("Poule A");
         engagement.setEquipe(equipe);
         engagement.setCompetition(competition);
         engagementRepository.save(engagement);

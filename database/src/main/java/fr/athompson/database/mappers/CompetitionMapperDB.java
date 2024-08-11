@@ -40,6 +40,6 @@ public interface CompetitionMapperDB {
 
     @Named("enumDivisionToDB")
     public static Integer enumDivisionToDB(DivisionType divisionType){
-        return divisionType.ordinal()+1;
+        return divisionType.ordinal();
     }
 }

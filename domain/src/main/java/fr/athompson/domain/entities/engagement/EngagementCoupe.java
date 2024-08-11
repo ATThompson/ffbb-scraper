@@ -11,8 +11,8 @@ import java.util.Map;
 @Getter
 @Setter
 public class EngagementCoupe extends Engagement {
-    public EngagementCoupe(Competition competitionEngagee, String poule) {
-        super(competitionEngagee, poule);
+    public EngagementCoupe(Competition competitionEngagee) {
+        super(competitionEngagee);
     }
 
     public EngagementCoupe() {

@@ -38,7 +38,7 @@ public class JourneeScraper extends Scraper<JourneeScrap> {
             rencontres.add(getRencontre(dataRencontre));
         }
 
-        return new JourneeScrap(rencontres);
+        return new JourneeScrap(rencontres,null);
     }
 
 

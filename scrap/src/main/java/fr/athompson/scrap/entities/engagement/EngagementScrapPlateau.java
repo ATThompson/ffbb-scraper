@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 public class EngagementScrapPlateau extends EngagementScrap {
 
-    public EngagementScrapPlateau(CompetitionScrap competitionEngagee, String poule) {
-        super(competitionEngagee, poule);
+    public EngagementScrapPlateau(CompetitionScrap competitionEngagee) {
+        super(competitionEngagee);
     }
 }

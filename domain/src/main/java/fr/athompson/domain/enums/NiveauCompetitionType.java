@@ -10,5 +10,6 @@ public enum NiveauCompetitionType {
     DEPARTEMENTAL,
     INTER_REGIONAL,
     REGIONAL,
-    NATIONAL;
+    NATIONAL,
+    PRO;
 }

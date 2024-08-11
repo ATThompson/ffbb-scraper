@@ -13,7 +13,7 @@ public class EngagementScrapChampionnat extends EngagementScrap {
     public EngagementScrapChampionnat() {
     }
 
-    public EngagementScrapChampionnat(CompetitionScrap competitionEngagee, String poule) {
-        super(competitionEngagee, poule);
+    public EngagementScrapChampionnat(CompetitionScrap competitionEngagee) {
+        super(competitionEngagee);
     }
 }

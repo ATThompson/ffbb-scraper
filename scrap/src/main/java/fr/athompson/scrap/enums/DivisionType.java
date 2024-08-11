@@ -7,12 +7,13 @@ import java.util.List;
 
 @Getter
 public enum DivisionType {
+    ELITE(List.of("élite","elite")),
     DIVISION_1(List.of("division 1","pre ","inter")),
-    DIVISION_2(List.of("division 2")),
-    DIVISION_3(List.of("division 3")),
-    DIVISION_4(List.of("division 4")),
-    DIVISION_5(List.of("division 5")),
-    DIVISION_6(List.of("division 6")),
+    DIVISION_2(List.of("division 2"," 2")),
+    DIVISION_3(List.of("division 3"," 3")),
+    DIVISION_4(List.of("division 4"," 4")),
+    DIVISION_5(List.of("division 5"," 5")),
+    DIVISION_6(List.of("division 6"," 6")),
     DIVISION_7(List.of("division 7")),
     DIVISION_8(List.of("division 8")),
     DIVISION_9(List.of("division 9")),

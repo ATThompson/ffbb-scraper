@@ -10,7 +10,8 @@ public enum NiveauCompetitionType {
     DEPARTEMENTAL(List.of("departemental","pre regional","preregional","pre-region")),
     INTER_REGIONAL(List.of("inter regional","inter-regional","interregional")),
     REGIONAL(List.of("pre national","regional","prenational","pre-nat")),
-    NATIONAL(List.of("national"));
+    NATIONAL(List.of("national")),
+    PRO(List.of());
 
     final List<String> possibiliteLibelleHtml;
 

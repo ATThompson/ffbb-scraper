@@ -10,7 +10,8 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder
-public record Competition(Classement classement,
+public record Competition(String nom,
+                          Classement classement,
                           List<Journee> journees,
                           List<Equipe> equipes,
                           SexeCompetitionType sexe,
@@ -18,6 +19,8 @@ public record Competition(Classement classement,
                           DivisionType division,
                           CategorieType categorie,
                           Integer nombrePoules,
+                          String poule,
+                          Boolean isEspoir,
                           Comite comite,
                           String idOrganisation,
                           String idDivision,

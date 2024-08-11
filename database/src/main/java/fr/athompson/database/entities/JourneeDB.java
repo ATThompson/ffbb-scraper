@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -18,5 +21,11 @@ public class JourneeDB {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "competition_id", nullable = false)
     private CompetitionDB competition;
+
+    @Column(name = "journee_id_html", nullable = false)
+    private Integer journeeIdHtml;
+
+    @OneToMany(mappedBy = "journee")
+    private Set<RencontreDB> rencontres = new LinkedHashSet<>();
 
 }

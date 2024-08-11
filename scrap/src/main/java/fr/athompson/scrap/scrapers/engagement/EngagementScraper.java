@@ -59,7 +59,6 @@ public class EngagementScraper extends Scraper<List<EngagementScrap>> {
         var engagements = new ArrayList<EngagementScrap>();
         for (Element equipeEngage : equipesEngages) {
             if (equipeEngage.hasClass("altern-2") || equipeEngage.hasClass("no-altern-2")) {
-                String poule = getPoule(equipeEngage);
                 var competition = creerCompetition(equipeEngage);
                 //Paroucrir la compétition regarder les équipes
                 //Si on tombe sur l'équipe qui possède notre identifiant team
@@ -67,8 +66,7 @@ public class EngagementScraper extends Scraper<List<EngagementScrap>> {
                 engagements.add(
                         EngagementScrapFactory.createEngagement(
                                 engagementType,
-                                competition,
-                                poule
+                                competition
                         )
                 );
             }
@@ -76,7 +74,7 @@ public class EngagementScraper extends Scraper<List<EngagementScrap>> {
         return engagements;
     }
 
-    private static String getPoule(Element equipeEngage) {
+    private String getPoule(Element equipeEngage) {
         String libellePourPoule = equipeEngage.select("td.gauche").first().text();
 
         String poule="";
@@ -90,6 +88,6 @@ public class EngagementScraper extends Scraper<List<EngagementScrap>> {
     private CompetitionScrap creerCompetition(Element equipeEngage) throws Exception {
         String lienCompetition = equipeEngage.select("a").attr("href");
         var params = new Parametres(lienCompetition);
-        return competitionScraper.getData(params.getIdOrganisation(), params.getIdDivision(), params.getIdPoule());
+        return competitionScraper.getData(params.getIdOrganisation(), params.getIdDivision(), params.getIdPoule(), getPoule(equipeEngage));
     }
 }

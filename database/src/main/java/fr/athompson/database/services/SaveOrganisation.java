@@ -3,6 +3,7 @@ package fr.athompson.database.services;
 import fr.athompson.cron.spi.SPISaveOrganisation;
 import fr.athompson.database.entities.ClassementDB;
 import fr.athompson.database.entities.EquipeDB;
+import fr.athompson.database.entities.JourneeDB;
 import fr.athompson.database.entities.RencontreDB;
 import fr.athompson.database.mappers.*;
 import fr.athompson.database.repositories.*;
@@ -16,13 +17,16 @@ import fr.athompson.domain.entities.engagement.EngagementChampionnat;
 import fr.athompson.domain.entities.engagement.EngagementPlateau;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Component
 @AllArgsConstructor
 public class SaveOrganisation implements SPISaveOrganisation {
@@ -97,7 +101,8 @@ public class SaveOrganisation implements SPISaveOrganisation {
             }else
                 type = "COUPE";
             var competitionDB = competitionMapperDB.toDatabase(competition);
-            var competitionDBFound = competitionRepository.findByNiveauAndDivisionAndCategorieAndTypeAndSexeAndNombrePoulesAndAnneeAndComite_Id(
+           /**
+            *  var competitionDBFound = competitionRepository.findByNiveauAndDivisionAndCategorieAndTypeAndSexeAndNombrePoulesAndAnneeAndComite_Id(
                     competitionDB.getNiveau(),
                     competitionDB.getDivision(),
                     competitionDB.getCategorie(),
@@ -105,15 +110,21 @@ public class SaveOrganisation implements SPISaveOrganisation {
                     competitionDB.getNombrePoules(),
                     2025,
                     comiteDB.getId()).orElse(null);
-
-            var equipeDBList = new ArrayList<EquipeDB>();
+            */
+            var competitionDBFound = competitionRepository.findByOrganisationIdHtmlAndDivisionIdHtmlAndPouleIdHtml(
+                    competitionDB.getOrganisationIdHtml(),
+                    competitionDB.getDivisionIdHtml(),
+                    competitionDB.getPouleIdHtml()
+            );
+            List<EquipeDB> equipeDBList;
             Optional<EquipeDB> equipeEngagement;
-            if(null == competitionDBFound) {
+            if(competitionDBFound.isEmpty()) {
                 competitionDB.setType(type);
+                //TODO: Modifier ca
                 competitionDB.setAnnee(2025);
                 competitionDB.setComite(comiteDB);
                 competitionRepository.save(competitionDB);
-
+                equipeDBList = new ArrayList<>();
                 //Si la competition a été trouvée
                 for(RowClassement rowClassement : competition.classement().rowsClassement()){
                     //Pour chaque ligne de classement
@@ -139,14 +150,24 @@ public class SaveOrganisation implements SPISaveOrganisation {
                                 .filter(e ->
                                         e.getNom().equals(rencontre.equipeDomicile().nom())
                                                 && e.getOrganisationIdHtml().equals(rencontre.equipeDomicile().idOrganisation())
-                                ).findFirst();
-                        rencontreDB.setEquipeDomicile(equipeDBDomicile.orElse(null));
+                                ).findFirst().orElse(null);
+                        if(null == equipeDBDomicile) {
+                            equipeDBDomicile = equipeMapperDB.toDatabase(rencontre.equipeDomicile());
+                            equipeRepository.save(equipeDBDomicile);
+                            equipeDBList.add(equipeDBDomicile);
+                        }
+                        rencontreDB.setEquipeDomicile(equipeDBDomicile);
                         var equipeDBVisiteur = equipeDBList.stream()
                                 .filter(e ->
                                         e.getNom().equals(rencontre.equipeVisiteur().nom())
                                                 && e.getOrganisationIdHtml().equals(rencontre.equipeVisiteur().idOrganisation())
-                                ).findFirst();
-                        rencontreDB.setEquipeVisiteur(equipeDBVisiteur.orElse(null));
+                                ).findFirst().orElse(null);
+                        if(null == equipeDBVisiteur) {
+                            equipeDBVisiteur = equipeMapperDB.toDatabase(rencontre.equipeVisiteur());
+                            equipeRepository.save(equipeDBVisiteur);
+                            equipeDBList.add(equipeDBVisiteur);
+                        }
+                        rencontreDB.setEquipeVisiteur(equipeDBVisiteur);
                         rencontreDB.setJournee(journeeDB);
                         rencontreRepository.save(rencontreDB);
                     }
@@ -155,8 +176,8 @@ public class SaveOrganisation implements SPISaveOrganisation {
                         .filter(e -> e.getOrganisationIdHtml().equals(organisation.idOrganisation())
                         ).findFirst();
             }else{
-                competitionDB = competitionDBFound;
-                equipeDBList = competitionDB.getClassements().stream().map(ClassementDB::getEquipe).collect(Collectors.toCollection(ArrayList::new));
+                competitionDB = competitionDBFound.get();
+                equipeDBList = competitionDB.getJournees().stream().map(JourneeDB::getRencontres).flatMap(Collection::stream).map(RencontreDB::getEquipeDomicile).distinct().toList();
                 equipeEngagement = equipeDBList.stream()
                         .filter(e -> e.getOrganisationIdHtml().equals(organisation.idOrganisation()) && e.getEngagements().isEmpty()
                         ).findFirst();
@@ -166,10 +187,13 @@ public class SaveOrganisation implements SPISaveOrganisation {
             engagementDB.setOrganisation(organisationDB);
             engagementDB.setCompetition(competitionDB);
             //Si plusieurs équipes récupérer leurs id db et faire un findBy et checker quelles ne sont pas reliés à un autre engagement sinon prendre l'autre
-
+            if(equipeEngagement.isEmpty()){
+                //TODO: Pas de nouvelles équipes à engager
+                log.info("PAS DE NOUVEAUX ENGAGEMENTS pour l'organisation "+organisation.nom());
+                return;
+            }
             engagementDB.setEquipe(equipeEngagement.orElse(null));
             engagementRepository.save(engagementDB);
         }
-        // On recherche l'organisation.
     }
 }

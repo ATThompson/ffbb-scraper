@@ -8,7 +8,6 @@ import lombok.Setter;
 @Setter
 public abstract class EngagementScrap {
     private CompetitionScrap competitionEngagee;
-    private String poule;
 
     //TODO: Voir pour ajouter le niveau depart/regional plus la division 1 2 3
     // et définir ca comme une liste de toutes ces infos
@@ -17,9 +16,8 @@ public abstract class EngagementScrap {
     public EngagementScrap() {
     }
 
-    public EngagementScrap(CompetitionScrap competitionEngagee, String poule) {
+    public EngagementScrap(CompetitionScrap competitionEngagee) {
         this.competitionEngagee = competitionEngagee;
-        this.poule = poule;
     }
 
 }

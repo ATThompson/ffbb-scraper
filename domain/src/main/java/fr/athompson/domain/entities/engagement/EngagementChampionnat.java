@@ -13,8 +13,8 @@ import java.util.Map;
 @Getter
 @Setter
 public class EngagementChampionnat extends Engagement {
-    public EngagementChampionnat(Competition competitionEngagee, String poule) {
-        super(competitionEngagee, poule);
+    public EngagementChampionnat(Competition competitionEngagee) {
+        super(competitionEngagee);
     }
 
     public EngagementChampionnat() {

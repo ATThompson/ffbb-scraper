@@ -19,7 +19,7 @@ public class HelloController2 {
     final SPIGetOrganisation getOrganisation;
 
     final SPISaveOrganisation saveOrganisation;
-
+    //30ab pro fille et espoirs
     @GetMapping("/tata/{idOrganisation}")
     public String qsdsq(@PathVariable String idOrganisation) throws JsonProcessingException {
         System.out.println(idOrganisation);

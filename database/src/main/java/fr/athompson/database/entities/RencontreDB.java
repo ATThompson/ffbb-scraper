@@ -20,14 +20,14 @@ public class RencontreDB {
     @Column(name = "date", nullable = false)
     private LocalDate date;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "equipe_domicile_id", nullable = false)
     private EquipeDB equipeDomicile;
 
     @Column(name = "score_domicile", nullable = false)
     private Integer scoreDomicile;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "equipe_visiteur_id", nullable = false)
     private EquipeDB equipeVisiteur;
 
@@ -37,5 +37,8 @@ public class RencontreDB {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "journee_id", nullable = false)
     private JourneeDB journee;
+
+    @Column(name = "rencontre_id_html", nullable = false)
+    private Integer rencontreIdHtml;
 
 }

@@ -7,6 +7,7 @@ import java.util.List;
 
 @Getter
 public enum DivisionType {
+    ELITE,
     DIVISION_1,
     DIVISION_2,
     DIVISION_3,

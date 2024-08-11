@@ -55,4 +55,16 @@ public class CompetitionDB {
     @OneToMany(mappedBy = "competition")
     private Set<ClassementDB> classements = new LinkedHashSet<>();
 
+    @Column(name = "is_espoir")
+    private Boolean isEspoir;
+
+    @OneToMany(mappedBy = "competition")
+    private Set<JourneeDB> journees = new LinkedHashSet<>();
+
+    @Column(name = "nom", nullable = false)
+    private String nom;
+
+    @Column(name = "poule")
+    private String poule;
+
 }
