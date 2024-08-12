@@ -1,4 +1,4 @@
-package fr.athompson.database.services;
+package fr.athompson.database.services.competition;
 
 import fr.athompson.cron.spi.SPISaveCompetition;
 import fr.athompson.database.entities.ClassementDB;

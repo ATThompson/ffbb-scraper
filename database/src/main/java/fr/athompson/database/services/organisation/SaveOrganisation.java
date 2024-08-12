@@ -1,13 +1,11 @@
-package fr.athompson.database.services;
+package fr.athompson.database.services.organisation;
 
 import fr.athompson.cron.spi.SPISaveOrganisation;
-import fr.athompson.database.entities.ClassementDB;
 import fr.athompson.database.entities.EquipeDB;
 import fr.athompson.database.entities.JourneeDB;
 import fr.athompson.database.entities.RencontreDB;
 import fr.athompson.database.mappers.*;
 import fr.athompson.database.repositories.*;
-import fr.athompson.domain.entities.Equipe;
 import fr.athompson.domain.entities.Journee;
 import fr.athompson.domain.entities.Organisation;
 import fr.athompson.domain.entities.Rencontre;
@@ -24,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Component

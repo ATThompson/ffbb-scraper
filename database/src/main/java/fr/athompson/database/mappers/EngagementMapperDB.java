@@ -13,4 +13,5 @@ public interface EngagementMapperDB {
     @Mapping(target = "organisation", ignore = true)
     EngagementDB toDatabase(Engagement engagement);
 
+    Engagement toEntity(EngagementDB engagement);
 }

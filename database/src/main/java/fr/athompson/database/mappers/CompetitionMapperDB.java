@@ -23,7 +23,7 @@ public interface CompetitionMapperDB {
     @Mapping(target = "idOrganisation", source = "organisationIdHtml")
     @Mapping(target = "idDivision", source = "divisionIdHtml")
     @Mapping(target = "idPoule", source = "pouleIdHtml")
-    Competition toDomain(CompetitionDB competitionDB);
+    Competition toDomainUniquementSimpleChamp(CompetitionDB competitionDB);
 
     default Competition toMetaData(CompetitionDB competitionDB){
         return Competition.builder()

@@ -10,4 +10,8 @@ public interface OrganisationMapperDB {
 
     @Mapping(target = "organisationIdHtml", source = "idOrganisation")
     OrganisationDB toDatabase(Organisation organisation);
+
+    @Mapping(target = "idOrganisation", source = "organisationIdHtml")
+    @Mapping(target = "engagements", ignore = true)
+    Organisation toEntitySansEngagements(OrganisationDB organisation);
 }
