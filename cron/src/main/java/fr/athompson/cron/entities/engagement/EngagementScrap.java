@@ -1,6 +1,6 @@
-package fr.athompson.scrap.entities.engagement;
+package fr.athompson.cron.entities.engagement;
 
-import fr.athompson.scrap.entities.CompetitionScrap;
+import fr.athompson.cron.entities.CompetitionScrap;
 import lombok.Getter;
 import lombok.Setter;
 

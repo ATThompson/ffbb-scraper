@@ -1,8 +1,8 @@
 package fr.athompson.cron.spi;
 
-import fr.athompson.domain.entities.Competition;
+import fr.athompson.cron.entities.CompetitionScrap;
 
 public interface SPIGetCompetition {
 
-    Competition execute(String idOrganisation, String idDivision, String idPoule);
+    CompetitionScrap execute(String idOrganisation, String idDivision, String idPoule, String libellePoule);
 }

@@ -31,11 +31,11 @@ public abstract class Scraper<T> {
         int nbSecondes = random.ints(nbSecondesMin, nbSecondesMax)
                 .findFirst()
                 .getAsInt();
-        try {
+       /** try {
             Thread.sleep(nbSecondes*1000);
         } catch (InterruptedException e) {
             log.error(e.getMessage());
-        }
+        }*/
         CompteurAppelSingleton.getInstance().ajoutUnNombreAppel();
         driver.get(uri);
         return Jsoup.parse(driver.getPageSource());

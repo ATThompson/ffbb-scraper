@@ -1,8 +1,8 @@
 package fr.athompson.scrap.scrapers.classement;
 
-import fr.athompson.scrap.entities.EquipeScrap;
-import fr.athompson.scrap.entities.classement.ClassementScrap;
-import fr.athompson.scrap.entities.classement.RowClassementScrap;
+import fr.athompson.cron.entities.EquipeScrap;
+import fr.athompson.cron.entities.classement.ClassementScrap;
+import fr.athompson.cron.entities.classement.RowClassementScrap;
 import fr.athompson.scrap.scrapers.Scraper;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
@@ -52,7 +52,8 @@ public class ClassementScraper extends Scraper<ClassementScrap> {
                 .matchForfaits(Integer.valueOf(dataRow.get(11+addBonus).text()))
                 .pointsMarques(Integer.valueOf(dataRow.get(16+addBonus).text()))
                 .pointsEncaisses(Integer.valueOf(dataRow.get(17+addBonus).text()))
-                .pointsDifference(Integer.valueOf(dataRow.get(18+addBonus).text()))
+                //.pointsDifference(Integer.valueOf(dataRow.get(18+addBonus).text()))
+                .pointsDifference(Integer.valueOf(0))
                 .build();
     }
 

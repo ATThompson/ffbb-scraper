@@ -1,8 +1,8 @@
 package fr.athompson.cron.spi;
 
-import fr.athompson.domain.entities.Organisation;
+import fr.athompson.cron.entities.OrganisationScrap;
 
 public interface SPIGetOrganisation {
 
-    Organisation getOrganisation(String idOrganisation);
+    OrganisationScrap getOrganisation(String idOrganisation);
 }

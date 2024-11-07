@@ -26,6 +26,12 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>fr.athompson</groupId>
+            <artifactId>domain</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>1.6.0.RC1</version>
@@ -34,12 +40,6 @@
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct-processor</artifactId>
             <version>1.6.0.RC1</version>
-        </dependency>
-        <dependency>
-            <groupId>fr.athompson</groupId>
-            <artifactId>scrap</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
     <build>

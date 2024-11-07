@@ -1,7 +1,7 @@
 package fr.athompson.cron.spi;
 
-import fr.athompson.domain.entities.Competition;
+import fr.athompson.cron.entities.CompetitionScrap;
 
 public interface SPISaveCompetition {
-    void execute(Competition competition);
+    void execute(CompetitionScrap competition);
 }

@@ -1,10 +1,10 @@
 package fr.athompson.database.services.competition;
 
+import fr.athompson.cron.entities.CompetitionScrap;
 import fr.athompson.cron.spi.SPIGetAllCompetitions;
 import fr.athompson.database.entities.CompetitionDB;
 import fr.athompson.database.mappers.CompetitionMapperDB;
 import fr.athompson.database.repositories.CompetitionRepository;
-import fr.athompson.domain.entities.Competition;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -21,7 +21,7 @@ public class GetAllCompetitions implements SPIGetAllCompetitions {
     CompetitionMapperDB competitionMapperDB;
 
     @Override
-    public List<Competition> execute() {
+    public List<CompetitionScrap> execute() {
        List<CompetitionDB> competitionsDB =  competitionRepository.findAll();
        return competitionMapperDB.toMetaData(competitionsDB);
     }

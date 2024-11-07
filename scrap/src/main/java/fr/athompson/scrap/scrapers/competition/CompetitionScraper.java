@@ -1,10 +1,10 @@
 package fr.athompson.scrap.scrapers.competition;
 
-import fr.athompson.scrap.entities.ComiteScrap;
-import fr.athompson.scrap.entities.CompetitionScrap;
-import fr.athompson.scrap.entities.JourneeScrap;
-import fr.athompson.scrap.entities.classement.ClassementScrap;
-import fr.athompson.scrap.enums.*;
+import fr.athompson.cron.enums.*;
+import fr.athompson.cron.entities.ComiteScrap;
+import fr.athompson.cron.entities.CompetitionScrap;
+import fr.athompson.cron.entities.JourneeScrap;
+import fr.athompson.cron.entities.classement.ClassementScrap;
 import fr.athompson.scrap.scrapers.Scraper;
 import fr.athompson.scrap.scrapers.classement.ClassementScraper;
 import fr.athompson.scrap.scrapers.journee.JourneeScraper;

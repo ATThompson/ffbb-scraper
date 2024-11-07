@@ -1,10 +1,10 @@
-package fr.athompson.scrap.entities;
+package fr.athompson.cron.entities;
 
-import fr.athompson.scrap.entities.classement.ClassementScrap;
-import fr.athompson.scrap.enums.CategorieType;
-import fr.athompson.scrap.enums.DivisionType;
-import fr.athompson.scrap.enums.NiveauCompetitionType;
-import fr.athompson.scrap.enums.SexeCompetitionType;
+import fr.athompson.cron.entities.classement.ClassementScrap;
+import fr.athompson.cron.enums.CategorieType;
+import fr.athompson.cron.enums.DivisionType;
+import fr.athompson.cron.enums.NiveauCompetitionType;
+import fr.athompson.cron.enums.SexeCompetitionType;
 import lombok.Builder;
 
 import java.util.List;

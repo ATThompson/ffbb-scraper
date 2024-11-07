@@ -1,4 +1,4 @@
-package fr.athompson.scrap.entities.classement;
+package fr.athompson.cron.entities.classement;
 
 import java.util.ArrayList;
 import java.util.List;

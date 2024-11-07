@@ -67,4 +67,7 @@ public class CompetitionDB {
     @Column(name = "poule")
     private String poule;
 
+    @OneToMany(mappedBy = "competition")
+    private Set<EngagementDB> engagements = new LinkedHashSet<>();
+
 }

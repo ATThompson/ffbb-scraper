@@ -1,4 +1,4 @@
-package fr.athompson.scrap.enums;
+package fr.athompson.cron.enums;
 
 import lombok.Getter;
 

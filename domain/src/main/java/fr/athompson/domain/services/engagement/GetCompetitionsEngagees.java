@@ -1,5 +1,6 @@
 package fr.athompson.domain.services.engagement;
 
+import fr.athompson.domain.entities.Competition;
 import fr.athompson.domain.entities.engagement.Engagement;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ public class GetCompetitionsEngagees {
 
     SPICompetitionsEngagees spiCompetitionsEngagees;
 
-    public List<Engagement> execute(String idOrganisation){
+    public List<Competition> execute(String idOrganisation){
         return spiCompetitionsEngagees.execute(idOrganisation);
     }
 }

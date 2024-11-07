@@ -27,5 +27,6 @@ public interface CompetitionRepository extends CrudRepository<CompetitionDB, Lon
             String pouleIdHtml
     );
 
+    Optional<List<CompetitionDB>> findAllByEngagements_Organisation_organisationIdHtml(String organisationIdHtml);
     List<CompetitionDB> findAll();
 }

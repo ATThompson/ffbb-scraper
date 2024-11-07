@@ -1,4 +1,4 @@
-package fr.athompson.scrap.entities;
+package fr.athompson.cron.entities;
 
 public record ComiteScrap(String idComite, String nom) {
 }

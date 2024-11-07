@@ -1,9 +1,9 @@
 package fr.athompson.scrap.scrapers.engagement;
 
-import fr.athompson.scrap.entities.CompetitionScrap;
-import fr.athompson.scrap.entities.engagement.EngagementScrap;
-import fr.athompson.scrap.entities.engagement.factory.EngagementScrapFactory;
-import fr.athompson.scrap.enums.EngagementType;
+import fr.athompson.cron.entities.CompetitionScrap;
+import fr.athompson.cron.entities.engagement.EngagementScrap;
+import fr.athompson.cron.entities.engagement.factory.EngagementScrapFactory;
+import fr.athompson.cron.enums.EngagementType;
 import fr.athompson.scrap.scrapers.Scraper;
 import fr.athompson.scrap.scrapers.competition.CompetitionScraper;
 import fr.athompson.scrap.scrapers.utils.ScrapUtils;

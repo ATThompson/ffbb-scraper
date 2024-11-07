@@ -1,20 +1,18 @@
 package fr.athompson.database.services.competition;
 
+import fr.athompson.cron.entities.CompetitionScrap;
+import fr.athompson.cron.entities.JourneeScrap;
+import fr.athompson.cron.entities.RencontreScrap;
+import fr.athompson.cron.entities.classement.RowClassementScrap;
 import fr.athompson.cron.spi.SPISaveCompetition;
 import fr.athompson.database.entities.ClassementDB;
 import fr.athompson.database.entities.CompetitionDB;
 import fr.athompson.database.entities.RencontreDB;
 import fr.athompson.database.mappers.ClassementMapperDB;
-import fr.athompson.database.mappers.CompetitionMapperDB;
 import fr.athompson.database.mappers.RencontreMapperDB;
 import fr.athompson.database.repositories.ClassementRepository;
 import fr.athompson.database.repositories.CompetitionRepository;
 import fr.athompson.database.repositories.RencontreRepository;
-import fr.athompson.domain.entities.Competition;
-import fr.athompson.domain.entities.Journee;
-import fr.athompson.domain.entities.Rencontre;
-import fr.athompson.domain.entities.classement.RowClassement;
-import fr.athompson.scrap.mappers.RencontreMapper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -26,10 +24,8 @@ import java.util.Optional;
 @AllArgsConstructor
 public class SaveCompetition implements SPISaveCompetition {
 
-    private final RencontreMapper rencontreMapper;
-    CompetitionRepository competitionRepository;
 
-    CompetitionMapperDB competitionMapperDB;
+    CompetitionRepository competitionRepository;
 
     ClassementMapperDB classementMapperDB;
 
@@ -40,7 +36,7 @@ public class SaveCompetition implements SPISaveCompetition {
     RencontreMapperDB rencontreMapperDB;
 
     @Transactional
-    public void execute(Competition competition) {
+    public void execute(CompetitionScrap competition) {
         Optional<CompetitionDB> optionalCompetitionPresenteEnBase = competitionRepository.findByOrganisationIdHtmlAndDivisionIdHtmlAndPouleIdHtml(
                 competition.idOrganisation(),
                 competition.idDivision(),
@@ -49,7 +45,7 @@ public class SaveCompetition implements SPISaveCompetition {
         if (optionalCompetitionPresenteEnBase.isPresent()) {
             var competitionDB = optionalCompetitionPresenteEnBase.get();
             var classement = competitionDB.getClassements();
-            for (RowClassement rowClassement : competition.classement().rowsClassement()) {
+            for (RowClassementScrap rowClassement : competition.classement().rowsClassement()) {
                 ClassementDB ligneClassementDejaPresenteEnBase = classement.stream()
                         .filter(equipeDB ->
                                 equipeDB.getEquipe().getNom().equals(rowClassement.equipe().nom())
@@ -64,11 +60,11 @@ public class SaveCompetition implements SPISaveCompetition {
                 classementRepository.save(classementDBToSave);
             }
 
-            for (Journee journee : competition.journees()) {
-                List<RencontreDB> rencontresDB = rencontreRepository.findByJournee_journeeIdHtmlAndJournee_Competition_id(journee.idJournee(), competitionDB.getId());
+            for (JourneeScrap journee : competition.journees()) {
+                List<RencontreDB> rencontresDB = rencontreRepository.findByJournee_journeeIdHtmlAndJournee_Competition_id(journee.getIdJournee(), competitionDB.getId());
                 for (RencontreDB rencontreDB : rencontresDB) {
-                    Rencontre rencontreDomain = journee.recontres().stream().filter(j -> j.numeroRencontre().equals(rencontreDB.getRencontreIdHtml())).findFirst().orElse(null);
-                    var rencontreDBToSave = rencontreMapperDB.toDatabase(rencontreDomain);
+                    RencontreScrap rencontreScrap = journee.getRecontres().stream().filter(j -> j.numeroRencontre().equals(rencontreDB.getRencontreIdHtml())).findFirst().orElse(null);
+                    var rencontreDBToSave = rencontreMapperDB.toDatabase(rencontreScrap);
                     rencontreDBToSave.setJournee(rencontreDB.getJournee());
                     rencontreDBToSave.setId(rencontreDB.getId());
                     rencontreDBToSave.setEquipeVisiteur(rencontreDB.getEquipeVisiteur());

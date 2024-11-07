@@ -1,7 +1,7 @@
 package fr.athompson.cron.spi;
 
-import fr.athompson.domain.entities.Organisation;
+import fr.athompson.cron.entities.OrganisationScrap;
 
 public interface SPISaveOrganisation {
-    void saveOrganisation(Organisation organisation);
+    void saveOrganisation(OrganisationScrap organisation);
 }

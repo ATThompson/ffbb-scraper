@@ -1,6 +1,6 @@
-package fr.athompson.scrap.entities;
+package fr.athompson.cron.entities;
 
-import fr.athompson.scrap.entities.engagement.EngagementScrap;
+import fr.athompson.cron.entities.engagement.EngagementScrap;
 
 import java.util.List;
 

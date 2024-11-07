@@ -1,18 +1,18 @@
 package fr.athompson.database.services.organisation;
 
+import fr.athompson.cron.entities.JourneeScrap;
+import fr.athompson.cron.entities.OrganisationScrap;
+import fr.athompson.cron.entities.RencontreScrap;
+import fr.athompson.cron.entities.classement.RowClassementScrap;
+import fr.athompson.cron.entities.engagement.EngagementScrap;
+import fr.athompson.cron.entities.engagement.EngagementScrapChampionnat;
+import fr.athompson.cron.entities.engagement.EngagementScrapPlateau;
 import fr.athompson.cron.spi.SPISaveOrganisation;
 import fr.athompson.database.entities.EquipeDB;
 import fr.athompson.database.entities.JourneeDB;
 import fr.athompson.database.entities.RencontreDB;
 import fr.athompson.database.mappers.*;
 import fr.athompson.database.repositories.*;
-import fr.athompson.domain.entities.Journee;
-import fr.athompson.domain.entities.Organisation;
-import fr.athompson.domain.entities.Rencontre;
-import fr.athompson.domain.entities.classement.RowClassement;
-import fr.athompson.domain.entities.engagement.Engagement;
-import fr.athompson.domain.entities.engagement.EngagementChampionnat;
-import fr.athompson.domain.entities.engagement.EngagementPlateau;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -61,13 +61,13 @@ public class SaveOrganisation implements SPISaveOrganisation {
     ComiteRepository comiteRepository;
     @Override
     @Transactional
-    public void saveOrganisation(Organisation organisation) {
+    public void saveOrganisation(OrganisationScrap organisation) {
         var organisationDB = organisationRepository.findByNom(organisation.nom()).orElse(null);
         if(null == organisationDB) {
             organisationDB = organisationMapperDB.toDatabase(organisation);
             organisationRepository.save(organisationDB);
         }
-        for(Engagement engagement : organisation.engagements()){
+        for(EngagementScrap engagement : organisation.engagements()){
 
             var competition = engagement.getCompetitionEngagee();
             var comiteDB = comiteRepository.findByComiteIdHtml(competition.comite().idComite()).orElse(null);
@@ -77,9 +77,9 @@ public class SaveOrganisation implements SPISaveOrganisation {
             }
 
             String type;
-            if(engagement instanceof EngagementChampionnat)
+            if(engagement instanceof EngagementScrapChampionnat)
                 type = "CHAMPIONNAT";
-            else if (engagement instanceof EngagementPlateau) {
+            else if (engagement instanceof EngagementScrapPlateau) {
                 type = "PLATEAU";
             }else
                 type = "COUPE";
@@ -100,7 +100,7 @@ public class SaveOrganisation implements SPISaveOrganisation {
                 competitionRepository.save(competitionDB);
                 equipeDBList = new ArrayList<>();
                 //Si la competition a été trouvée
-                for(RowClassement rowClassement : competition.classement().rowsClassement()){
+                for(RowClassementScrap rowClassement : competition.classement().rowsClassement()){
                     //Pour chaque ligne de classement
                     //Retrouver l'équipe ?
                     //Si oui cool
@@ -113,12 +113,12 @@ public class SaveOrganisation implements SPISaveOrganisation {
                     classement.setCompetition(competitionDB);
                     classementRepository.save(classement);
                 }
-                for(Journee journee : competition.journees()){
+                for(JourneeScrap journee : competition.journees()){
                     var journeeDB = journeeMapperDB.toDatabase(journee);
                     journeeDB.setCompetition(competitionDB);
                     journeeRepository.save(journeeDB);
 
-                    for(Rencontre rencontre : journee.recontres()){
+                    for(RencontreScrap rencontre : journee.getRecontres()){
                         var rencontreDB = rencontreMapperDB.toDatabase(rencontre);
                         var equipeDBDomicile = equipeDBList.stream()
                                 .filter(e ->
