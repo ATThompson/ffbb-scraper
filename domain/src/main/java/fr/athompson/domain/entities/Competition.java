@@ -22,7 +22,7 @@ public record Competition(String nom,
                           String poule,
                           Boolean isEspoir,
                           Comite comite,
-                          String idOrganisation,
+                          String idChampionnat,
                           String idDivision,
                           String idPoule) {
 

@@ -1,8 +1,8 @@
 package fr.athompson.scrap.scrapers.journee;
 
-import fr.athompson.cron.entities.EquipeScrap;
-import fr.athompson.cron.entities.JourneeScrap;
-import fr.athompson.cron.entities.RencontreScrap;
+import fr.athompson.scrap.entities.EquipeScrap;
+import fr.athompson.scrap.entities.JourneeScrap;
+import fr.athompson.scrap.entities.RencontreScrap;
 import fr.athompson.scrap.scrapers.Scraper;
 import fr.athompson.scrap.scrapers.utils.DateTimeFormatter;
 import lombok.extern.slf4j.Slf4j;

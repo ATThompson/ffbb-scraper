@@ -21,7 +21,7 @@ public interface CompetitionRepository extends CrudRepository<CompetitionDB, Lon
             Long comiteId
     );
 
-    Optional<CompetitionDB> findByOrganisationIdHtmlAndDivisionIdHtmlAndPouleIdHtml(
+    Optional<CompetitionDB> findByChampionnatIdHtmlAndDivisionIdHtmlAndPouleIdHtml(
             String organisationIdHtml,
             String divisionIdHtml,
             String pouleIdHtml

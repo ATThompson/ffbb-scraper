@@ -1,6 +1,5 @@
 package fr.athompson.database.mappers;
 
-import fr.athompson.cron.entities.classement.RowClassementScrap;
 import fr.athompson.database.entities.ClassementDB;
 import fr.athompson.domain.entities.classement.RowClassement;
 import org.mapstruct.InjectionStrategy;
@@ -14,6 +13,6 @@ public interface ClassementMapperDB {
 
     @Mapping(target = "competition", ignore = true)
     @Mapping(target = "equipe", ignore = true)
-    ClassementDB toDatabase(RowClassementScrap rowClassement);
+    ClassementDB toDatabase(RowClassement rowClassement);
 
 }

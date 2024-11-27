@@ -1,10 +1,11 @@
 package fr.athompson.scrap.scrapers.competition;
 
-import fr.athompson.cron.enums.*;
-import fr.athompson.cron.entities.ComiteScrap;
-import fr.athompson.cron.entities.CompetitionScrap;
-import fr.athompson.cron.entities.JourneeScrap;
-import fr.athompson.cron.entities.classement.ClassementScrap;
+
+import fr.athompson.scrap.entities.ComiteScrap;
+import fr.athompson.scrap.entities.CompetitionScrap;
+import fr.athompson.scrap.entities.JourneeScrap;
+import fr.athompson.scrap.entities.classement.ClassementScrap;
+import fr.athompson.scrap.enums.*;
 import fr.athompson.scrap.scrapers.Scraper;
 import fr.athompson.scrap.scrapers.classement.ClassementScraper;
 import fr.athompson.scrap.scrapers.journee.JourneeScraper;
@@ -64,7 +65,7 @@ public class CompetitionScraper extends Scraper<CompetitionScrap> {
                 getPoule(),
                 getIsEspoir(idTdDivisionNormlized),
                 getComite(doc),
-                getIdOrganisation(),
+                getIdChampionnat(),
                 getIdDivision(),
                 getIdPoule());
     }
@@ -75,7 +76,7 @@ public class CompetitionScraper extends Scraper<CompetitionScrap> {
     private String getIdDivision(){
         return getParamsMethod()[1];
     }
-    private  String getIdOrganisation() {
+    private  String getIdChampionnat() {
         return getParamsMethod()[0];
     }
     private String getPoule() {
@@ -141,6 +142,10 @@ public class CompetitionScraper extends Scraper<CompetitionScrap> {
     }
 
     private DivisionType getDivision(String idTdDivisionNormlized) {
+        if(idTdDivisionNormlized.contains("phase")){
+            int index = idTdDivisionNormlized.indexOf("phase");
+            idTdDivisionNormlized = idTdDivisionNormlized.substring(0,index);
+        }
         ProLigueType proLigueType = ProLigueType.findByLibelleHtml(idTdDivisionNormlized);
         if(null == proLigueType) {
             var division = DivisionType.findBypossibiliteLibelle(idTdDivisionNormlized);
@@ -148,7 +153,7 @@ public class CompetitionScraper extends Scraper<CompetitionScrap> {
                 return division;
             else {
                 log.error("Division introuvable pour : " + idTdDivisionNormlized);
-                return DivisionType.DIVISION_1;
+                return DivisionType.DIVISION_INTROUVABLE;
             }
         }else{
             if(proLigueType.in(ProLigueType.PRO_A,ProLigueType.ESPOIRS_PRO_A,ProLigueType.LF1))

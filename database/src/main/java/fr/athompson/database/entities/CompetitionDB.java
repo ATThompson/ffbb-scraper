@@ -43,8 +43,8 @@ public class CompetitionDB {
     @JoinColumn(name = "comite_id", nullable = false)
     private ComiteDB comite;
 
-    @Column(name = "organisation_id_html", nullable = false)
-    private String organisationIdHtml;
+    @Column(name = "championnat_id_html", nullable = false)
+    private String championnatIdHtml;
 
     @Column(name = "division_id_html", nullable = false)
     private String divisionIdHtml;

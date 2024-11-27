@@ -1,7 +1,7 @@
 package fr.athompson.scrap.scrapers.organisation;
 
-import fr.athompson.cron.entities.OrganisationScrap;
-import fr.athompson.cron.entities.engagement.EngagementScrap;
+import fr.athompson.scrap.entities.OrganisationScrap;
+import fr.athompson.scrap.entities.engagement.EngagementScrap;
 import fr.athompson.scrap.scrapers.Scraper;
 import fr.athompson.scrap.scrapers.engagement.EngagementScraper;
 import fr.athompson.scrap.scrapers.utils.ScrapUtils;

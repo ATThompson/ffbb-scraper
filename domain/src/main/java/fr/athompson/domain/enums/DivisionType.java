@@ -18,6 +18,7 @@ public enum DivisionType {
     DIVISION_8,
     DIVISION_9,
     DIVISION_10,
-    DIVISION_11;
+    DIVISION_11,
+    DIVISION_INTROUVABLE;
 
 }

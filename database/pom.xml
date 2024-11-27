@@ -27,6 +27,12 @@
         </dependency>
         <dependency>
             <groupId>fr.athompson</groupId>
+            <artifactId>scrap</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>fr.athompson</groupId>
             <artifactId>domain</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>

@@ -1,16 +1,14 @@
 package fr.athompson.database.mappers;
 
-import fr.athompson.cron.entities.CompetitionScrap;
-import fr.athompson.cron.enums.DivisionType;
 import fr.athompson.database.entities.CompetitionDB;
 import fr.athompson.domain.entities.Competition;
+import fr.athompson.domain.enums.DivisionType;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Mapper(componentModel = "spring",
@@ -19,32 +17,29 @@ import java.util.stream.Collectors;
 public interface CompetitionMapperDB {
 
     @Mapping(target = "division", source="division", qualifiedByName = "enumDivisionToDB")
-    @Mapping(target = "organisationIdHtml", source = "idOrganisation")
+    @Mapping(target = "championnatIdHtml", source = "idChampionnat")
     @Mapping(target = "divisionIdHtml", source = "idDivision")
     @Mapping(target = "pouleIdHtml", source = "idPoule")
-    CompetitionDB toDatabase(CompetitionScrap competition);
+    CompetitionDB toDatabase(Competition competition);
 
-    @Mapping(target = "idOrganisation", source = "organisationIdHtml")
+    @Mapping(target = "idChampionnat", source = "championnatIdHtml")
     @Mapping(target = "idDivision", source = "divisionIdHtml")
     @Mapping(target = "idPoule", source = "pouleIdHtml")
+    @Mapping(target = "division", source = "division", qualifiedByName = "divisionDBToEnum")
     Competition toDomainUniquementSimpleChamp(CompetitionDB competitionDB);
 
-    default CompetitionScrap toMetaData(CompetitionDB competitionDB){
-        return CompetitionScrap.builder()
-                .idOrganisation(competitionDB.getOrganisationIdHtml())
-                .idDivision(competitionDB.getDivisionIdHtml())
-                .idPoule(competitionDB.getPouleIdHtml())
-                .poule(competitionDB.getPoule())
-                .build();
-    }
-
-    default List<CompetitionScrap> toMetaData(List<CompetitionDB> competitionDB){
-        return competitionDB.stream().map(this::toMetaData).toList();
+    default List<Competition> toDomainUniquementSimpleChamp(List<CompetitionDB> competitionDB){
+        return competitionDB.stream().map(this::toDomainUniquementSimpleChamp).toList();
     }
 
 
     @Named("enumDivisionToDB")
     public static Integer enumDivisionToDB(DivisionType divisionType){
-        return divisionType.ordinal();
+        return divisionType == DivisionType.DIVISION_INTROUVABLE ? 99 : divisionType.ordinal();
+    }
+
+    @Named("divisionDBToEnum")
+    public static DivisionType divisionDBToEnum(Integer division){
+        return DivisionType.values().length < division ? DivisionType.DIVISION_INTROUVABLE : DivisionType.values()[ division ];
     }
 }
