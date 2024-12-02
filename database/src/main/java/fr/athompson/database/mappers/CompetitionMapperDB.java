@@ -16,7 +16,17 @@ import java.util.List;
         uses = {ComiteMapperDB.class})
 public interface CompetitionMapperDB {
 
-    @Mapping(target = "division", source="division", qualifiedByName = "enumDivisionToDB")
+    @Named("enumDivisionToDB")
+    static Integer enumDivisionToDB(DivisionType divisionType) {
+        return divisionType == DivisionType.DIVISION_INTROUVABLE ? 99 : divisionType.ordinal();
+    }
+
+    @Named("divisionDBToEnum")
+    static DivisionType divisionDBToEnum(Integer division) {
+        return DivisionType.values().length < division ? DivisionType.DIVISION_INTROUVABLE : DivisionType.values()[division];
+    }
+
+    @Mapping(target = "division", source = "division", qualifiedByName = "enumDivisionToDB")
     @Mapping(target = "championnatIdHtml", source = "idChampionnat")
     @Mapping(target = "divisionIdHtml", source = "idDivision")
     @Mapping(target = "pouleIdHtml", source = "idPoule")
@@ -26,20 +36,10 @@ public interface CompetitionMapperDB {
     @Mapping(target = "idDivision", source = "divisionIdHtml")
     @Mapping(target = "idPoule", source = "pouleIdHtml")
     @Mapping(target = "division", source = "division", qualifiedByName = "divisionDBToEnum")
+    @Mapping(target = "journees", ignore = true)
     Competition toDomainUniquementSimpleChamp(CompetitionDB competitionDB);
 
-    default List<Competition> toDomainUniquementSimpleChamp(List<CompetitionDB> competitionDB){
+    default List<Competition> toDomainUniquementSimpleChamp(List<CompetitionDB> competitionDB) {
         return competitionDB.stream().map(this::toDomainUniquementSimpleChamp).toList();
-    }
-
-
-    @Named("enumDivisionToDB")
-    public static Integer enumDivisionToDB(DivisionType divisionType){
-        return divisionType == DivisionType.DIVISION_INTROUVABLE ? 99 : divisionType.ordinal();
-    }
-
-    @Named("divisionDBToEnum")
-    public static DivisionType divisionDBToEnum(Integer division){
-        return DivisionType.values().length < division ? DivisionType.DIVISION_INTROUVABLE : DivisionType.values()[ division ];
     }
 }
