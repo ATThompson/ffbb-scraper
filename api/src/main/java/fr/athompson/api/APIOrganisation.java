@@ -1,6 +1,5 @@
 package fr.athompson.api;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import fr.athompson.domain.entities.Competition;
 import fr.athompson.domain.entities.DernierResultat;
 import fr.athompson.domain.entities.ProchainMatch;
@@ -43,12 +42,12 @@ public class APIOrganisation {
 
     DernierResultatResponseMapper dernierResultatResponseMapper;
 
-    RecupererProchainesRencontresOrganisation recupererProchainesRencontresOrganisation;
+    RecupererProchainsMatchsOrganisation recupererProchainsMatchsOrganisation;
 
     ProchainMatchResponseMapper prochainMatchResponseMapper;
 
     @GetMapping
-    public List<OrganisationResponse> recupererToutes() throws JsonProcessingException {
+    public List<OrganisationResponse> recupererToutes() {
         var organisations = recupererToutesOrganisations.execute();
         return organisations.stream().map(organisationResponseMapper::toResponse).toList();
     }
@@ -61,26 +60,27 @@ public class APIOrganisation {
     }
 
     @GetMapping("/{idOrganisation}/actualiser")
-    public String actualiser(@PathVariable String idOrganisation){
+    public String actualiser(@PathVariable String idOrganisation) {
         actualiserOrganisation.execute(idOrganisation);
         return "OK";
     }
 
 
     @GetMapping("/{idOrganisation}/competitionsEngagees")
-    public List<CompetitionResponse> competitionsEngagees(@PathVariable String idOrganisation){
+    public List<CompetitionResponse> competitionsEngagees(@PathVariable String idOrganisation) {
         List<Competition> competitions = recupererCompetitionsEngagees.execute(idOrganisation);
         return competitions.stream().map(competitionResponseMapper::toResponse).toList();
     }
 
     @GetMapping("/{idOrganisation}/resultatsRecents")
-    public List<DernierResultatResponse> resultatsRecents(@PathVariable String idOrganisation){
+    public List<DernierResultatResponse> resultatsRecents(@PathVariable String idOrganisation) {
         List<DernierResultat> dernierResultats = recupererResultatsRecentsOrganisation.execute(idOrganisation);
-        return  dernierResultatResponseMapper.toResponse(dernierResultats);
+        return dernierResultatResponseMapper.toResponse(dernierResultats);
     }
+
     @GetMapping("/{idOrganisation}/prochainsMatchs")
-    public List<ProchainMatchResponse> prochainsMatchs(@PathVariable String idOrganisation){
-        List<ProchainMatch> prochainsMatchs = recupererProchainesRencontresOrganisation.execute(idOrganisation);
+    public List<ProchainMatchResponse> prochainsMatchs(@PathVariable String idOrganisation) {
+        List<ProchainMatch> prochainsMatchs = recupererProchainsMatchsOrganisation.execute(idOrganisation);
         return prochainMatchResponseMapper.toResponse(prochainsMatchs);
     }
 }
