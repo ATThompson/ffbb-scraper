@@ -3,11 +3,9 @@ package fr.athompson.database.services.api.competition;
 
 import fr.athompson.database.entities.*;
 import fr.athompson.database.mappers.ClassementMapperDB;
-import fr.athompson.database.mappers.EquipeMapperDB;
 import fr.athompson.database.mappers.RencontreMapperDB;
 import fr.athompson.database.repositories.ClassementRepository;
 import fr.athompson.database.repositories.CompetitionRepository;
-import fr.athompson.database.repositories.EquipeRepository;
 import fr.athompson.database.repositories.RencontreRepository;
 import fr.athompson.domain.entities.Competition;
 import fr.athompson.domain.entities.Journee;
@@ -16,11 +14,12 @@ import fr.athompson.domain.entities.classement.RowClassement;
 import fr.athompson.domain.services.spi.competition.SPISauvegarderCompetition;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
-import java.util.stream.Stream;
 
+@Slf4j
 @Component
 @AllArgsConstructor
 public class SauvegarderCompetition implements SPISauvegarderCompetition {
@@ -35,8 +34,6 @@ public class SauvegarderCompetition implements SPISauvegarderCompetition {
     RencontreRepository rencontreRepository;
 
     RencontreMapperDB rencontreMapperDB;
-    EquipeMapperDB equipeMapperDB;
-    EquipeRepository equipeRepository;
     @Transactional
     public void sauvegarder(Competition competition) {
         Optional<CompetitionDB> optionalCompetitionPresenteEnBase = competitionRepository.findByChampionnatIdHtmlAndDivisionIdHtmlAndPouleIdHtml(
@@ -88,11 +85,15 @@ public class SauvegarderCompetition implements SPISauvegarderCompetition {
                 for (RencontreDB rencontreDB : rencontresDB) {
                     Rencontre rencontreScrap = journee.rencontres().stream().filter(j -> j.numeroRencontre().equals(rencontreDB.getRencontreIdHtml())).findFirst().orElse(null);
                     var rencontreDBToSave = rencontreMapperDB.toDatabase(rencontreScrap);
-                    rencontreDBToSave.setJournee(rencontreDB.getJournee());
-                    rencontreDBToSave.setId(rencontreDB.getId());
-                    rencontreDBToSave.setEquipeVisiteur(rencontreDB.getEquipeVisiteur());
-                    rencontreDBToSave.setEquipeDomicile(rencontreDB.getEquipeDomicile());
-                    rencontreRepository.save(rencontreDBToSave);
+                    if(null == rencontreDBToSave) {
+                        log.warn("Erreur lors de la mise à jour de la rencontre : {} pour le championnat {}", rencontreDB.getRencontreIdHtml(), competition.nom());
+                    }else{
+                        rencontreDBToSave.setJournee(rencontreDB.getJournee());
+                        rencontreDBToSave.setId(rencontreDB.getId());
+                        rencontreDBToSave.setEquipeVisiteur(rencontreDB.getEquipeVisiteur());
+                        rencontreDBToSave.setEquipeDomicile(rencontreDB.getEquipeDomicile());
+                        rencontreRepository.save(rencontreDBToSave);
+                    }
                 }
             }
         }
