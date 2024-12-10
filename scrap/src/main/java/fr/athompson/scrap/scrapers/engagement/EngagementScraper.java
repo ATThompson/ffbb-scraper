@@ -7,7 +7,7 @@ import fr.athompson.scrap.enums.EngagementType;
 import fr.athompson.scrap.scrapers.Scraper;
 import fr.athompson.scrap.scrapers.competition.CompetitionScraper;
 import fr.athompson.scrap.scrapers.utils.ScrapUtils;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Log4j2
+@Slf4j
 @Component
 public class EngagementScraper extends Scraper<List<EngagementScrap>> {
 
@@ -35,7 +35,6 @@ public class EngagementScraper extends Scraper<List<EngagementScrap>> {
         var engagements = new ArrayList<EngagementScrap>();
         Elements htmlEngagements = doc.select("table.liste");
         for (Element htmlEngagement : htmlEngagements) {
-            log.info(htmlEngagement.getAllElements().size());
             if (htmlEngagement.getAllElements().size() > 1) {
                 var engagementType = getEngagementType(htmlEngagement);
                 if (engagementType == EngagementType.CHAMPIONNAT) {
@@ -59,6 +58,7 @@ public class EngagementScraper extends Scraper<List<EngagementScrap>> {
         var engagements = new ArrayList<EngagementScrap>();
         for (Element equipeEngage : equipesEngages) {
             if (equipeEngage.hasClass("altern-2") || equipeEngage.hasClass("no-altern-2")) {
+                log.info("Engagement : {} ", equipeEngage);
                 var competition = creerCompetition(equipeEngage);
                 //Paroucrir la compétition regarder les équipes
                 //Si on tombe sur l'équipe qui possède notre identifiant team

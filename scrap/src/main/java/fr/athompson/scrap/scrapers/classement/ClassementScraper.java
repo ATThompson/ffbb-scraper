@@ -27,6 +27,7 @@ public class ClassementScraper extends Scraper<ClassementScrap> {
     public ClassementScrap scrap(Document doc) throws Exception {
         var rowsClassement = new ArrayList<RowClassementScrap>();
         var tableRowClassement = doc.select("table.liste tr[class*=altern-2]");
+        log.info("Scrap classement nblignes : {}", tableRowClassement.size());
         for (Element rowElement : tableRowClassement) {
             Elements dataRow = rowElement.getAllElements();
             var oneRowClassement = getOneRowClassement(dataRow);

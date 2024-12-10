@@ -5,6 +5,7 @@ import fr.athompson.scrap.entities.engagement.EngagementScrap;
 import fr.athompson.scrap.scrapers.Scraper;
 import fr.athompson.scrap.scrapers.engagement.EngagementScraper;
 import fr.athompson.scrap.scrapers.utils.ScrapUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@Slf4j
 public class OrganisationScraper extends Scraper<OrganisationScrap> {
 
     EngagementScraper engagementScraper;
@@ -30,6 +32,7 @@ public class OrganisationScraper extends Scraper<OrganisationScrap> {
         var ligneInfosOrganisation = ScrapUtils.getFirstElementText(doc, "td.titre-bloc");
         var infosClub = ligneInfosOrganisation.split("-");
         String nomOrganisation = getNomOrganisation(infosClub);
+        log.info("Scrapping de l'organisation {}",nomOrganisation);
         List<EngagementScrap> engagementScraps = engagementScraper.getData(idOrganisation);
         return new OrganisationScrap(nomOrganisation, engagementScraps, idOrganisation);
     }

@@ -42,16 +42,16 @@ public class CompetitionScraper extends Scraper<CompetitionScrap> {
 
     protected CompetitionScrap scrap(Document doc) throws Exception {
         var journees = new ArrayList<JourneeScrap>();
+        String nomCompetition = getNomCompetition(doc);
+        log.info("Competition : {} ", nomCompetition);
         String identifiantClassement = getIdentifiantClassement(doc);
         Integer nbPages = pageScaper.getData(identifiantClassement);
-        log.info("Nombre de journees : {} ", nbPages);
         for (int page = 1; page <= nbPages; page++) {
             JourneeScrap journeeScrap = journeeScraper.getData(identifiantClassement + Integer.toHexString(page));
             journeeScrap.setIdJournee(page);
             journees.add(journeeScrap);
         }
         ClassementScrap classementScrap = classementScraper.getData(identifiantClassement);
-        String nomCompetition = getNomCompetition(doc);
         var idTdDivisionNormlized = getIdTdDivisionNormalizedLowerCase(nomCompetition);
         return new CompetitionScrap(nomCompetition,
                 classementScrap,
@@ -91,7 +91,6 @@ public class CompetitionScraper extends Scraper<CompetitionScrap> {
 
         Element a = doc.getElementById("idTableCoupeChampionnat").select("a[href*=organisation]").first();
 
-
         String hrefOrganisation = a.attribute("href").getValue();
         Pattern pattern = Pattern.compile("\\.\\./organisation/(.*)\\.html");
         Matcher matcher = pattern.matcher(hrefOrganisation);
@@ -119,7 +118,6 @@ public class CompetitionScraper extends Scraper<CompetitionScrap> {
             idTdDivision = doc.getElementById("idTdDivision").select("option[value="+getParamsMethod()[1]+"]").first().text();
         } catch (RuntimeException e) {
             idTdDivision = doc.getElementById("idTdDivision").text().trim();
-            log.error(e.getMessage());
         }
         return idTdDivision;
     }
