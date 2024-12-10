@@ -43,6 +43,7 @@ public interface RencontreRepository extends CrudRepository<RencontreDB, Long> {
             and (renc.equipeDomicile.organisationIdHtml = :idOrganisation
                 or renc.equipeVisiteur.organisationIdHtml = :idOrganisation)
             and renc.date < :prochainDimanche
+            and renc.date > CURRENT_TIMESTAMP
             and ( renc.scoreDomicile = 0 and renc.scoreVisiteur = 0 )
             order by renc.date asc
             limit 1""")
